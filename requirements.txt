@@ -1,0 +1,16 @@
+requests>=2.31.0
+Pillow>=10.0.0
+schedule>=1.2.0
+python-dotenv>=1.0.0
+fal-client>=0.4.0
+diffusers==0.27.2
+transformers
+accelerate
+safetensors
+controlnet_aux
+opencv-python
+insightface
+onnxruntime
+openai
+google.cloud
+google-cloud-storage

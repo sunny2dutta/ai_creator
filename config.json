@@ -1,0 +1,34 @@
+{
+  "celebrity": {
+    "name": "Luna Martinez",
+    "age": 26,
+    "gender": "female",
+    "occupation": "lifestyle and fitness influencer",
+    "personality_traits": ["confident", "inspiring", "energetic", "authentic", "positive"],
+    "interests": ["fitness", "wellness", "fashion", "travel", "photography", "healthy cooking"],
+    "style_preferences": ["athletic chic", "minimalist", "trendy", "comfortable"],
+    "bio_description": "26-year-old lifestyle and fitness influencer inspiring others to live their best life through wellness, fashion, and authentic content"
+  },
+  "image_conditions": {
+    "style": "lifestyle",
+    "lighting": "natural daylight",
+    "location": "modern fitness studio",
+    "outfit_style": "athletic chic",
+    "pose_description": "confident and natural",
+    "mood": "energetic and inspiring",
+    "background": "clean and modern",
+    "quality": "high",
+    "aspect_ratio": "1:1"
+  },
+  "posting_schedule": {
+    "feed_posts_per_day": 1,
+    "story_posts_per_day": 3,
+    "posting_times": ["08:30", "13:00", "18:30"],
+    "active_days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+  },
+  "instagram_config": {
+    "access_token": "YOUR_ACCESS_TOKEN_HERE",
+    "instagram_business_id": "YOUR_INSTAGRAM_BUSINESS_ID_HERE",
+    "facebook_page_id": "YOUR_FACEBOOK_PAGE_ID_HERE"
+  }
+}

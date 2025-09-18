@@ -1,0 +1,50 @@
+{
+  "profile_name": "rupashi",
+  "topic": "beautiful Bengali woman",
+  "categories": {
+    "Very very sexy seductive look": {
+      "starter_prompts": [
+        "Sultry evening look with dramatic lighting and bold makeup",
+        "Seductive gaze with glamorous styling ambiance",
+        "Alluring nighttime photoshoot with sophisticated elegance",
+        "Captivating pose with striking makeup and confident expression",
+        "Enchanting evening glamour with dramatic shadows and highlights",
+        "NO idols in the background"
+      ],
+      "clothing_hints": [
+        "elegant evening wear with deep necklines",
+        "luxurious silk or satin fabrics",
+        "bold statement jewelry",
+        "dramatic makeup with smoky eyes"
+      ]
+    },
+    "Festival cultural woman": {
+      "starter_prompts": [
+        "Traditional Bengali festival attire with vibrant colors and cultural jewelry",
+        "Durga Puja celebration outfit with authentic Bengali styling",
+        "Poila Boishakh traditional dress with floral decorations and festive spirit",
+        "Cultural celebration look with traditional Bengali saree and ornaments",
+        "Festive Bengali woman in colorful traditional wear with cultural pride"
+      ],
+      "clothing_hints": [
+        "traditional Bengali saree with intricate borders",
+        "cultural jewelry including choker and bangles",
+        "vermillion and traditional makeup",
+        "floral decorations and cultural accessories"
+      ]
+    }
+  },
+  "style_preferences": {
+    "lighting": "studio lighting with soft shadows",
+    "camera": "Canon EOS R5, 85mm f/1.2 RF lens",
+    "quality": "8k photo, ultra-realistic portrait",
+    "background": "elegant indoor settings or cultural backdrops"
+  },
+  "base_images": [
+    "https://storage.googleapis.com/ai-creator-debarya/rupashi3.jpg",
+    "https://storage.googleapis.com/ai-creator-debarya/rupashi2.jpg",
+    "https://storage.googleapis.com/ai-creator-debarya/rupashi4.jpg",
+    "https://storage.googleapis.com/ai-creator-debarya/rupashi5.jpg",
+    "https://storage.googleapis.com/ai-creator-debarya/rupashi6.jpg"
+  ]
+}

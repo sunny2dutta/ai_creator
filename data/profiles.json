@@ -1,0 +1,20 @@
+{
+  "profiles": {
+    "rupashi": {
+      "facebook_page_id_env": "FACEBOOK_PAGE_ID_RUPASHI",
+      "instagram_business_id_env": "INSTAGRAM_BUSINESS_ID_RUPASHI",
+      "access_token_env": "FACEBOOK_LONG_ACCESS_TOKEN",
+      "prompt_file": "rupashi.json",
+      "description": "Bengali woman influencer profile",
+      "active": true
+    },
+      "mr.bananas": {
+        "facebook_page_id_env": "FACEBOOK_PAGE_ID_MRBANANAS",
+        "instagram_business_id_env": "INSTAGRAM_BUSINESS_ID_MRBANANAS",
+        "access_token_env": "FACEBOOK_LONG_ACCESS_TOKEN",
+        "prompt_file": "mrbananas.json",
+        "description": "Chimpanzee having fun in life",
+        "active": true
+      }
+  }
+}
