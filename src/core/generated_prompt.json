@@ -1,0 +1,36 @@
+{
+  "metadata": {
+    "generated_at": "2025-09-19T09:04:34.914864",
+    "source_arc": "Visiting New York",
+    "character": "rupashi",
+    "day_number": 5,
+    "data_source": "api",
+    "enhancement_method": "llm"
+  },
+  "day_content": {
+    "story_title": "A Day in Brooklyn",
+    "location": "Brooklyn Bridge and Williamsburg",
+    "activity_description": "She walks across the Brooklyn Bridge, explores the trendy streets of Williamsburg, and enjoys some local cuisine.",
+    "character_mood": "Adventurous and curious",
+    "base_prompt": "A young woman walking across the Brooklyn Bridge, with the New York City skyline in the background."
+  },
+  "enhanced_prompt": {
+    "enhanced_scene": "\"Golden hour lighting with warm, soft sunlight casting long shadows across the bridge and streets, enhancing the vibrancy of the scene.\",",
+    "visual_elements": [],
+    "mood_descriptors": [],
+    "lighting": "",
+    "composition": "\"The image should convey a sense of exploration and discovery, with dynamic compositions that draw the viewer into Rupashi's journey.\",",
+    "style_notes": "",
+    "clothing_details": "\"Rupashi wears a fitted leather jacket in deep maroon over a casual white blouse, paired with high-waisted, medium-wash jeans and stylish ankle boots. Her look is trendy yet comfortable, perfectly suited for a day of urban exploration.\",",
+    "jewelry_accessories": "\"Simple gold hoop earrings and a delicate layered necklace. A crossbody bag in a neutral tone complements her outfit, allowing for ease of movement while exploring.\",",
+    "social_media_caption": "\"Adventure awaits over every bridge and around every corner. Discovering the vibrant streets of Brooklyn. 🌆 #BrooklynBridge #WilliamsburgWanderlust #CityExplorer\""
+  },
+  "generation_parameters": {
+    "style": "photorealistic",
+    "quality": "high",
+    "aspect_ratio": "16:9",
+    "mood_weight": 0.8,
+    "setting_weight": 0.7,
+    "character_weight": 0.9
+  }
+}

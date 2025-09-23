@@ -1,0 +1,56 @@
+{
+  "story_arc": "Starting a fitness routine",
+  "character_profile": "rupashi",
+  "created_at": "now",
+  "days": {
+    "day_1": {
+      "story": "Day 1 of fitness journey - building strength and endurance",
+      "location": "Gym, home workout space, or outdoor fitness area",
+      "activity": "Day 1 workout routine and healthy habits",
+      "mood": "determined and focused",
+      "rough_prompt": "rupashi during day 1 workout, determined expression, fitness setting"
+    },
+    "day_2": {
+      "story": "Day 2 of fitness journey - building strength and endurance",
+      "location": "Gym, home workout space, or outdoor fitness area",
+      "activity": "Day 2 workout routine and healthy habits",
+      "mood": "determined and focused",
+      "rough_prompt": "rupashi during day 2 workout, determined expression, fitness setting"
+    },
+    "day_3": {
+      "story": "Day 3 of fitness journey - building strength and endurance",
+      "location": "Gym, home workout space, or outdoor fitness area",
+      "activity": "Day 3 workout routine and healthy habits",
+      "mood": "determined and focused",
+      "rough_prompt": "rupashi during day 3 workout, determined expression, fitness setting"
+    },
+    "day_4": {
+      "story": "Day 4 of fitness journey - building strength and endurance",
+      "location": "Gym, home workout space, or outdoor fitness area",
+      "activity": "Day 4 workout routine and healthy habits",
+      "mood": "determined and focused",
+      "rough_prompt": "rupashi during day 4 workout, determined expression, fitness setting"
+    },
+    "day_5": {
+      "story": "Day 5 of fitness journey - building strength and endurance",
+      "location": "Gym, home workout space, or outdoor fitness area",
+      "activity": "Day 5 workout routine and healthy habits",
+      "mood": "determined and focused",
+      "rough_prompt": "rupashi during day 5 workout, determined expression, fitness setting"
+    },
+    "day_6": {
+      "story": "Day 6 of fitness journey - building strength and endurance",
+      "location": "Gym, home workout space, or outdoor fitness area",
+      "activity": "Day 6 workout routine and healthy habits",
+      "mood": "determined and focused",
+      "rough_prompt": "rupashi during day 6 workout, determined expression, fitness setting"
+    },
+    "day_7": {
+      "story": "Day 7 of fitness journey - building strength and endurance",
+      "location": "Gym, home workout space, or outdoor fitness area",
+      "activity": "Day 7 workout routine and healthy habits",
+      "mood": "determined and focused",
+      "rough_prompt": "rupashi during day 7 workout, determined expression, fitness setting"
+    }
+  }
+}

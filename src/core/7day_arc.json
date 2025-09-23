@@ -1,0 +1,57 @@
+{
+  "story_arc": "Visiting New York",
+  "character_profile": "rupashi",
+  "created_at": "now",
+  "data_source": "api",
+  "days": {
+    "day_1": {
+      "story": "Arrival and First Impressions",
+      "location": "JFK Airport and Times Square",
+      "activity": "Rupashi arrives at JFK Airport, takes a cab to her hotel, and then heads to Times Square to soak in the vibrant atmosphere.",
+      "mood": "Excited and slightly overwhelmed",
+      "rough_prompt": "A young woman with a suitcase, standing in the middle of Times Square at night, surrounded by bright lights and bustling crowds."
+    },
+    "day_2": {
+      "story": "Exploring Central Park",
+      "location": "Central Park",
+      "activity": "She spends the day wandering through Central Park, enjoying a peaceful walk, and having a picnic on the Great Lawn.",
+      "mood": "Relaxed and content",
+      "rough_prompt": "A young woman sitting on a picnic blanket in Central Park, surrounded by trees and the city skyline in the background."
+    },
+    "day_3": {
+      "story": "Museum Hopping",
+      "location": "The Metropolitan Museum of Art and The Museum of Modern Art (MoMA)",
+      "activity": "Rupashi visits two iconic museums, immersing herself in art and culture.",
+      "mood": "Inspired and thoughtful",
+      "rough_prompt": "A woman gazing at a painting in a museum, with an expression of wonder, surrounded by famous artworks."
+    },
+    "day_4": {
+      "story": "Shopping and Broadway Show",
+      "location": "Fifth Avenue and Broadway",
+      "activity": "She spends the morning shopping along Fifth Avenue and ends the day watching a Broadway show.",
+      "mood": "Thrilled and delighted",
+      "rough_prompt": "A young woman with shopping bags, standing in front of a Broadway theater marquee lit up at night."
+    },
+    "day_5": {
+      "story": "A Day in Brooklyn",
+      "location": "Brooklyn Bridge and Williamsburg",
+      "activity": "She walks across the Brooklyn Bridge, explores the trendy streets of Williamsburg, and enjoys some local cuisine.",
+      "mood": "Adventurous and curious",
+      "rough_prompt": "A young woman walking across the Brooklyn Bridge, with the New York City skyline in the background."
+    },
+    "day_6": {
+      "story": "Iconic Landmarks Tour",
+      "location": "Statue of Liberty and Empire State Building",
+      "activity": "Rupashi visits the Statue of Liberty and takes in panoramic views from the Empire State Building.",
+      "mood": "Awe-struck and proud",
+      "rough_prompt": "A woman looking out from the Empire State Building\u2019s observation deck, gazing at the city below."
+    },
+    "day_7": {
+      "story": "Reflective Farewell",
+      "location": "A cozy caf\u00e9 in Greenwich Village",
+      "activity": "She spends her last day in a cozy caf\u00e9, journaling about her trip and reflecting on her experiences.",
+      "mood": "Reflective and grateful",
+      "rough_prompt": "A woman sitting at a caf\u00e9 table by a window, pen in hand, with a steaming cup of coffee, looking thoughtfully out the window."
+    }
+  }
+}

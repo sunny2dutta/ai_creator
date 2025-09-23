@@ -14,3 +14,5 @@ onnxruntime
 openai
 google.cloud
 google-cloud-storage
+openai
+dotenv

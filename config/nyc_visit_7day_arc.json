@@ -1,0 +1,56 @@
+{
+  "story_arc": "Visiting New York",
+  "character_profile": "rupashi",
+  "created_at": "now",
+  "days": {
+    "day_1": {
+      "story": "Arrival and first impressions",
+      "location": "Airport, hotel, initial area exploration",
+      "activity": "Traveling, checking in, getting oriented",
+      "mood": "excited and curious",
+      "rough_prompt": "rupashi arriving at destination, excited expression, travel outfit"
+    },
+    "day_2": {
+      "story": "Exploring major landmarks and attractions",
+      "location": "Famous landmarks and tourist spots",
+      "activity": "Sightseeing, taking photos, exploring",
+      "mood": "amazed and enthusiastic",
+      "rough_prompt": "rupashi at famous landmark, amazed expression, tourist setting"
+    },
+    "day_3": {
+      "story": "Discovering local culture and food",
+      "location": "Local restaurants, cultural sites, neighborhoods",
+      "activity": "Trying local cuisine, cultural experiences",
+      "mood": "adventurous and delighted",
+      "rough_prompt": "rupashi trying local food, delighted expression, authentic local setting"
+    },
+    "day_4": {
+      "story": "Hidden gems and off-the-beaten-path experiences",
+      "location": "Lesser-known spots, local recommendations",
+      "activity": "Exploring unique places, local interactions",
+      "mood": "curious and engaged",
+      "rough_prompt": "rupashi discovering hidden spot, curious expression, authentic location"
+    },
+    "day_5": {
+      "story": "Relaxation and reflection on the journey",
+      "location": "Parks, cafes, quiet scenic spots",
+      "activity": "Relaxing, journaling, people-watching",
+      "mood": "peaceful and reflective",
+      "rough_prompt": "rupashi in peaceful setting, reflective expression, scenic background"
+    },
+    "day_6": {
+      "story": "Last-minute adventures and shopping",
+      "location": "Markets, shops, final must-see places",
+      "activity": "Shopping for souvenirs, final explorations",
+      "mood": "bittersweet and appreciative",
+      "rough_prompt": "rupashi shopping for souvenirs, bittersweet expression, local market"
+    },
+    "day_7": {
+      "story": "Departure and farewell to the journey",
+      "location": "Hotel, airport, final views of the destination",
+      "activity": "Packing, final photos, departure",
+      "mood": "grateful and nostalgic",
+      "rough_prompt": "rupashi departing, grateful expression, luggage and travel gear"
+    }
+  }
+}

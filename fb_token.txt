@@ -1,0 +1,18 @@
+curl -G "https://graph.facebook.com/v23.0/me/accounts" \
+  --data-urlencode "access_token=EAAdDeYTb4BMBPd78EgMQMIQyMrru9LOtYfTJYZB4A9VR2KhwPdDNbcollCJ3ZBPo4OoPDKdTIV331hebnssZC7OZADP4p3GlYbKKzI5Nr4TkJzC7HpjKVJZA7EVevaPXvU5r074TZCQtjRO7LfbnyrFs3g7YZAqnRGzM4jvnWMKlcWYcFPpOR9sJOqC2wZDZD"
+
+
+
+EAAdDeYTb4BMBPZAGijXn3KyhF5lZCq7iL4mEYeJjYe7SoVzZAzfKNMrqGm8cG5IdjvrjUW7ujc4D7B3sCD0VLmaOQQjPQrzGX52OsQIWtmMhG34lZCNAW8MIhe39lmgq8WFGuueVQmqUXJFreIZCOMPZBLKGTdx2Dlt0OzG3uUtadBkEOT3t7PdUhdoHErBeLba2aybBM6aSSBhc1oBVgyjZCxyMtsRGdZCajdbaZBX0JVoQZD
+
+
+curl -G "https://graph.facebook.com/v23.0/oauth/access_token" \
+  --data-urlencode "grant_type=fb_exchange_token" \
+  --data-urlencode "client_id=2044514036080659" \
+  --data-urlencode "client_secret=e037fa76c6e8cc259e857607a0c2a0db" \
+  --data-urlencode "fb_exchange_token=EAAdDeYTb4BMBPTLGCEITJpFYg2NOZAkXrnhWYEsT4JSuR7SaZABtLPqoeXuHSNkvMzkHeKxLNVsE7IyepZCFjqHE1izSgPPLqqkgCW9dheYgmalDGQoglHjgD3tAjnd2ydlwyt76XZCMeFeqLpfdbQ1jyYV1uvuDGTEIp8ZBiU7yZAwFXi0kePh8k5q7z7QcioLg5IZB1to05F8CgMC42JeQAiFlE88FaZAN74pLURGxRIuZC
+"
+
+curl -G "https://graph.facebook.com/v23.0/me/businesses" \
+  --data-urlencode "access_token=EAAdDeYTb4BMBPUdHlu8k3V4XDxTKLNHUQ9ZABmF64Q1tVYyBUUDy68CzIaZAXJdGKeYPeRblbwlHoPk9svviq52gkj6lMmtT5XWedGMmfVHBQgskYv297ZAmPXfGKiuAfbdcj0yG4Md4gVRDDkqJtMQTSNaHt7lowZCiwO5EjS9CMXkO2RILFdjr5DwBuQZDZD"
+

@@ -7,10 +7,12 @@ import tempfile
 import logging
 import base64
 import argparse
+import json
+from datetime import datetime
 from dotenv import load_dotenv
 from PIL import Image
 import fal_client
-from prompt_generator import FacebookImagePromptGenerator
+from prompt_generator import PromptGenerator
 from profile_manager import ProfileManager
 import uuid
 from google.cloud import storage
@@ -40,6 +42,81 @@ def set_profile_credentials(profile_config):
     access_token = profile_config.access_token
     instagram_business_account_id = profile_config.instagram_business_id
 
+def load_json_data(json_path):
+    """Load data from JSON file"""
+    try:
+        with open(json_path, 'r') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        print(f"Error: JSON file not found at {json_path}")
+        return None
+    except json.JSONDecodeError:
+        print(f"Error: Invalid JSON format in {json_path}")
+        return None
+
+def extract_prompt_from_json(json_data):
+    """Extract prompt and caption from JSON data"""
+    if not json_data:
+        return None, None
+
+    prompt = ""
+    caption = ""
+
+    # Extract from enhanced_prompt structure if present
+    if 'enhanced_prompt' in json_data:
+        enhanced_scene = json_data['enhanced_prompt'].get('enhanced_scene', '')
+        visual_elements = json_data['enhanced_prompt'].get('visual_elements', [])
+        lighting = json_data['enhanced_prompt'].get('lighting', '')
+        composition = json_data['enhanced_prompt'].get('composition', '')
+        clothing_details = json_data['enhanced_prompt'].get('clothing_details', '')
+        jewelry_accessories = json_data['enhanced_prompt'].get('jewelry_accessories', '')
+
+        # Combine elements into comprehensive prompt
+        prompt_parts = [enhanced_scene]
+        if visual_elements:
+            prompt_parts.append("Visual elements: " + ", ".join(visual_elements))
+        if lighting:
+            prompt_parts.append("Lighting: " + lighting)
+        if composition:
+            prompt_parts.append("Composition: " + composition)
+        if clothing_details:
+            prompt_parts.append("Clothing: " + clothing_details)
+        if jewelry_accessories:
+            prompt_parts.append("Accessories: " + jewelry_accessories)
+
+        prompt = ". ".join(prompt_parts)
+
+        # Try to get caption from enhanced_prompt first
+        caption = json_data['enhanced_prompt'].get('social_media_caption', '')
+
+    # Fallback to day_content for caption if not found in enhanced_prompt
+    if not caption and 'day_content' in json_data:
+        story_title = json_data['day_content'].get('story_title', '')
+        activity = json_data['day_content'].get('activity_description', '')
+        caption = f"{story_title}: {activity}" if story_title and activity else story_title or activity
+
+    return prompt, caption
+
+def create_generated_prompt_json(original_data, output_path="generated_prompt.json"):
+    """Create generated_prompt.json with everything except metadata"""
+    if not original_data:
+        return False
+
+    # Create filtered data excluding metadata
+    filtered_data = {}
+    for key, value in original_data.items():
+        if key != 'metadata':
+            filtered_data[key] = value
+
+    try:
+        with open(output_path, 'w') as f:
+            json.dump(filtered_data, f, indent=2)
+        print(f"Created {output_path} without metadata")
+        return True
+    except Exception as e:
+        print(f"Error creating {output_path}: {e}")
+        return False
+
 def parse_arguments():
     """Parse command line arguments"""
     parser = argparse.ArgumentParser(description='Generate and post social media content')
@@ -61,6 +138,12 @@ def parse_arguments():
         '--list-profiles',
         action='store_true',
         help='List all available profiles'
+    )
+
+    parser.add_argument(
+        '--input-json',
+        type=str,
+        help='Path to input JSON file for consuming generated prompts'
     )
 
     return parser.parse_args()
@@ -194,31 +277,113 @@ def resize_for_feed(image):
     return square_image
 
 def post_image_to_facebook(image, caption=""):
-    """Post image to Facebook feed"""
+    print("Posting to Facebook feed...")
+
+    # Save to temp file + upload to GCS
+    with tempfile.NamedTemporaryFile(suffix='.jpg', delete=False) as temp_file:
+        image.save(temp_file.name, 'JPEG', quality=95)
+        temp_file_path = temp_file.name
+
+    try:
+        filename = f"facebook_{uuid.uuid4().hex}.jpg"
+        with open(temp_file_path, "rb") as f:
+            image_url = upload_image_to_gcs(f, "ai-creator-debarya", filename)
+
+        if not image_url:
+            print("Failed to upload image to GCS")
+            return None
+
+        print(f"Image uploaded to GCS: {image_url}")
+
+        api_url = f'https://graph.facebook.com/v23.0/{page_id}/photos'
+
+        # 👇 Force multipart/form-data (same as curl -F)
+        multipart_fields = {
+            "url": (None, image_url),
+            "caption": (None, caption),
+            "access_token": (None, access_token)
+        }
+
+        response = requests.post(api_url, files=multipart_fields)
+
+        if response.ok:
+            result = response.json()
+            print(f"✅ Successfully posted. Post ID: {result.get('id')}")
+            return result
+        else:
+            print(f"❌ Error {response.status_code}: {response.text}")
+            return None
+
+    finally:
+        if os.path.exists(temp_file_path):
+            os.unlink(temp_file_path)
+
+def post_image_to_facebook2(image, caption=""):
+    """Post image to Facebook feed using Page Access Token and pages_manage_posts permission"""
     print("Posting to Facebook feed...")
 
     # Resize for feed
     feed_image = resize_for_feed(image)
 
-    # Save to temporary file
+    # Save to temporary file and upload to GCS to get URL
     with tempfile.NamedTemporaryFile(suffix='.jpg', delete=False) as temp_file:
         feed_image.save(temp_file.name, 'JPEG', quality=95)
         temp_file_path = temp_file.name
 
     try:
+        # Upload image to GCS first to get a URL
+        import uuid
+        filename = f"facebook_{uuid.uuid4().hex}.jpg"
+
+        with open(temp_file_path, "rb") as f:
+            image_url = upload_image_to_gcs(f, "ai-creator-debarya", filename)
+
+        if not image_url:
+            print("Failed to upload image to GCS")
+            return None
+
+        print(f"Image uploaded to GCS: {image_url}")
+        print("page_id",page_id)
+
         api_url = f'https://graph.facebook.com/v23.0/{page_id}/photos'
 
-        # Upload the file directly
-        with open(temp_file_path, "rb") as f:
-            files = {"source": f}
-            data = {
-                "access_token": access_token
-            }
+        data = {
+            "url": image_url,
+            "access_token": access_token
+        }
 
-            if caption:
-                data["caption"] = caption
+        if caption:
+            data["caption"] = caption
 
-            response = requests.post(api_url, files=files, data=data)
+                # Use updated endpoint for pages with URL instead of file upload
+        print("api_url:", api_url)
+        print("page_id:", page_id, type(page_id))
+        print("access_token repr (first 10 chars):", repr(access_token)[:60])
+        print("data dict BEFORE request:", data)
+
+        # 2) Try sending as multipart/form-data (exactly like curl -F)
+        multipart_fields = {k: (None, str(v)) for k, v in data.items()}
+        resp_multipart = requests.post(api_url, files=multipart_fields)   # forces multipart/form-data
+        print("multipart/form resp:", resp_multipart.status_code, resp_multipart.text)
+
+        # 3) Show exactly what requests will send (prepared request) and then send it
+        req = requests.Request('POST', api_url, data=data)
+        prepped = req.prepare()
+        print("Prepared request headers:", prepped.headers)
+        if hasattr(prepped, "body"):
+            try:
+                print("Prepared request body (first 1000 bytes):", prepped.body[:1000])
+            except Exception:
+                print("Prepared request body not printable (binary or large). len:", len(prepped.body) if prepped.body else None)
+
+        s = requests.Session()
+        resp = s.send(prepped)
+        print("response.status_code:", resp.status_code)
+        print("response.text:", resp.text)
+
+
+
+        response = requests.post(api_url, files=data)
 
         if response.status_code == 200:
             result = response.json()
@@ -238,7 +403,7 @@ def post_image_to_facebook(image, caption=""):
             os.unlink(temp_file_path)
 
 def post_story_to_facebook(image):
-    """Post image to Facebook Stories using two-step process"""
+    """Post image to Facebook Stories using Page Access Token and pages_manage_posts permission"""
     print("Posting to Facebook Stories...")
 
     # Resize for stories
@@ -256,7 +421,7 @@ def post_story_to_facebook(image):
         with open(temp_file_path, "rb") as f:
             files = {"source": f}
             data = {
-                "access_token": access_token,
+                "access_token": access_token,  # Must be Page Access Token with pages_manage_posts permission
                 "published": "false"  # Don't publish, just upload for story use
             }
             upload_response = requests.post(upload_url, files=files, data=data)
@@ -466,31 +631,49 @@ async def main():
     # Parse command line arguments
     args = parse_arguments()
     print(args)
-
+    print("TEST")
     # Handle list profiles command
-    if args.list_profiles:
-        profile_manager = ProfileManager()
-        profiles = profile_manager.list_profiles()
-        print("Available profiles:")
-        for profile in profiles:
-            print(f"  - {profile}")
-        return
-
+    profile_manager = ProfileManager()
+    profiles = profile_manager.list_profiles()
+    print("Available profiles:")
+    for profile in profiles:
+        print(f"  - {profile}")
+        
     # Initialize profile manager and get profile config
     profile_manager = ProfileManager()
     try:
         profile_config = profile_manager.get_profile(args.profile)
         set_profile_credentials(profile_config)
+        print(profile_config)
+
     except ValueError as e:
         print(f"Error: {e}")
         print("Use --list-profiles to see available profiles")
         return
 
-    # Choose mode: 'generate' for new image generation or 'edit' for editing existing images
-    mode = "generate"  # Change to "edit" if you want to edit existing images
+    # Handle JSON input if provided
+    print(args.input_json)
+    if args.input_json:
+        json_data = load_json_data(args.input_json)
+        if not json_data:
+            return
 
-    generator = FacebookImagePromptGenerator()
-    prompt, caption = generator.generate_prompt(args.profile)
+        # Create generated_prompt.json without metadata
+        create_generated_prompt_json(json_data)
+
+        # Extract prompt and caption from JSON
+        prompt, caption = extract_prompt_from_json(json_data)
+        print("Prompt",prompt)
+        if not prompt:
+            print("Could not extract prompt from JSON data")
+            return
+    else:
+        # Use the original prompt generation method
+        generator = PromptGenerator("/Users/debaryadutta/ai_creator/src/core/7day_arc.json")
+        detailed_prompt = generator.generate_detailed_prompt()
+        prompt, caption = extract_prompt_from_json(detailed_prompt)
+        print("Prompt",prompt)
+
 
     # Get base images for the current profile
     image_urls = profile_manager.get_base_images(args.profile)
