@@ -1,4 +1,4 @@
 .env
 newenv.txt
-
+*venv*
 .env
