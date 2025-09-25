@@ -1,6 +1,17 @@
 # AI Instagram Celebrity System
 
-Automated AI-powered Instagram celebrity that generates and posts pictures to Instagram feed and stories using Instagram Graph API.
+Automated AI-powered Instagram celebrity that generates and posts pictures to Instagram feed and stories using Instagram Graph API. It posts long 7 day arc based on personalities of the AI influencers. CUrrently seeded with two:
+
+1. Rupashi: A beautiful Bengali woman who lives in Kolkata and dreams of being a model in Paris.
+2. Mr. Bananas: A chimpanzee who is also an intern at a big company wants to be CEO one day.
+
+System gets details of this personas from RAGs created and creates posts on Facebook (feed and stories) and Instagram.
+
+Current flow:
+
+1. Create a 7 day arc based on an initial prompt. Initial prompt is user input.
+2. Based on each day. Create a more detailed prompt, extract traits for relation DB and characteristics from RAGs
+3. Using the detailed prompt and past images create a new picture to post.
 
 ## Features
 
