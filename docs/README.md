@@ -13,6 +13,15 @@ Current flow:
 2. Based on each day. Create a more detailed prompt, extract traits for relation DB and characteristics from RAGs
 3. Using the detailed prompt and past images create a new picture to post.
 
+There is a post processing step:
+
+  1. Color Grading - Adjusts skin tones, shadows, and highlights to match realistic lighting conditions
+  2. Lightroom-Style Filters - Applies tone curves, split toning, vibrance boosts, and subtle vignette effects
+  3. Edge Sharpening - Selectively sharpens edges to fix AI's fuzzy boundaries while maintaining natural appearance
+  4. Realistic Noise - Adds film grain and sensor noise patterns to mimic camera artifacts
+  5. Instagram-Style Filters - Applies "natural", "warm", or "moody" filter presets
+
+
 ## Features
 
 - **Configurable Celebrity Persona**: Easily customize celebrity profile, personality, interests, and style
