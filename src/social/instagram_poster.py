@@ -13,6 +13,7 @@ import json
 from dataclasses import asdict
 from ai_celebrity_config import AIInstagramCelebrity, PostType
 from google.cloud import storage
+import logging
 
 # Set Google Cloud credentials
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/Users/debaryadutta/google_cloud_storage.json'
@@ -124,18 +125,42 @@ class InstagramGraphAPI:
             if os.path.exists(temp_file_path):
                 os.unlink(temp_file_path)
     
-    def publish_media(self, creation_id: str) -> str:
-        """Publish uploaded media"""
+    def publish_media(self, creation_id: str, max_retries: int = 3) -> str:
+        """Publish uploaded media with retry logic for processing delays"""
         endpoint = f"{self.instagram_business_id}/media_publish"
         params = {
             'creation_id': creation_id,
             'access_token': self.access_token
         }
-        
-        response = requests.post(f"{self.base_url}/{endpoint}", params=params)
-        response.raise_for_status()
-        
-        return response.json()['id']
+
+        for attempt in range(max_retries):
+            try:
+                response = requests.post(f"{self.base_url}/{endpoint}", params=params)
+
+                if response.status_code == 200:
+                    return response.json()['id']
+
+                # Check if it's a media processing delay error
+                if response.status_code == 400:
+                    error_data = response.json()
+                    if 'error' in error_data:
+                        error_message = error_data['error'].get('message', '').lower()
+                        if 'not ready for publishing' in error_message or 'media processing' in error_message:
+                            wait_time = (2 ** attempt) + 1  # Exponential backoff: 3, 5, 9 seconds
+                            print(f"⏳ Media not ready for publishing. Retrying in {wait_time} seconds... (Attempt {attempt + 1}/{max_retries})")
+                            time.sleep(wait_time)
+                            continue
+
+                response.raise_for_status()
+
+            except requests.exceptions.RequestException as e:
+                if attempt == max_retries - 1:
+                    raise e
+                wait_time = (2 ** attempt) + 1
+                print(f"⚠️  Request failed. Retrying in {wait_time} seconds... (Attempt {attempt + 1}/{max_retries})")
+                time.sleep(wait_time)
+
+        raise Exception(f"Failed to publish media after {max_retries} attempts")
     
     def post_feed_image(self, image_bytes: bytes, caption: str = "") -> str:
         """Post image to Instagram feed"""

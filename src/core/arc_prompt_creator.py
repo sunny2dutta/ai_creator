@@ -296,7 +296,7 @@ if __name__ == "__main__":
     creator = ArcPromptCreator()
 
     # Example 1: Travel story
-    story_arc = "Visiting New York"
+    story_arc = "durga puja week in Kolkata."
     story_data = creator.create_7_day_arc(story_arc, "rupashi")
 
     # Get user confirmation and allow editing

@@ -17,6 +17,10 @@ from profile_manager import ProfileManager
 import uuid
 from google.cloud import storage
 
+# Add parent directory to Python path for imports
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from utils.image_post_processor import ImagePostProcessor, enhance_ai_image, apply_portrait_enhancement, apply_lifestyle_filter
+
 # Set Google Cloud credentials
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/Users/debaryadutta/google_cloud_storage.json'
 
@@ -276,12 +280,39 @@ def resize_for_feed(image):
     square_image.paste(image, (x, y))
     return square_image
 
+def enhance_image_for_posting(image, post_type="lifestyle"):
+    """Apply post-processing to make AI images look more realistic before posting"""
+    print(f"Applying post-processing enhancement for {post_type}...")
+
+    # Convert PIL Image to bytes for processing
+    img_bytes = io.BytesIO()
+    image.save(img_bytes, format='JPEG', quality=95)
+    img_bytes.seek(0)
+    image_data = img_bytes.getvalue()
+
+    # Apply appropriate enhancement based on post type
+    if post_type == "portrait":
+        enhanced_bytes = apply_portrait_enhancement(image_data)
+    elif post_type == "lifestyle":
+        enhanced_bytes = apply_lifestyle_filter(image_data)
+    else:
+        enhanced_bytes = enhance_ai_image(image_data)
+
+    # Convert back to PIL Image
+    enhanced_image = Image.open(io.BytesIO(enhanced_bytes))
+
+    print("✅ Post-processing enhancement applied")
+    return enhanced_image
+
 def post_image_to_facebook(image, caption=""):
     print("Posting to Facebook feed...")
 
-    # Save to temp file + upload to GCS
+    # Apply post-processing enhancement before uploading
+    enhanced_image = enhance_image_for_posting(image, "lifestyle")
+
+    # Save enhanced image to temp file + upload to GCS
     with tempfile.NamedTemporaryFile(suffix='.jpg', delete=False) as temp_file:
-        image.save(temp_file.name, 'JPEG', quality=95)
+        enhanced_image.save(temp_file.name, 'JPEG', quality=95)
         temp_file_path = temp_file.name
 
     try:
@@ -322,8 +353,11 @@ def post_image_to_facebook2(image, caption=""):
     """Post image to Facebook feed using Page Access Token and pages_manage_posts permission"""
     print("Posting to Facebook feed...")
 
+    # Apply post-processing enhancement first
+    enhanced_image = enhance_image_for_posting(image, "lifestyle")
+
     # Resize for feed
-    feed_image = resize_for_feed(image)
+    feed_image = resize_for_feed(enhanced_image)
 
     # Save to temporary file and upload to GCS to get URL
     with tempfile.NamedTemporaryFile(suffix='.jpg', delete=False) as temp_file:
@@ -406,8 +440,11 @@ def post_story_to_facebook(image):
     """Post image to Facebook Stories using Page Access Token and pages_manage_posts permission"""
     print("Posting to Facebook Stories...")
 
+    # Apply post-processing enhancement first
+    enhanced_image = enhance_image_for_posting(image, "portrait")
+
     # Resize for stories
-    story_image = resize_for_stories(image)
+    story_image = resize_for_stories(enhanced_image)
 
     # Save to temporary file
     with tempfile.NamedTemporaryFile(suffix='.jpg', delete=False) as temp_file:
@@ -468,12 +505,15 @@ def post_story_to_facebook(image):
         if os.path.exists(temp_file_path):
             os.unlink(temp_file_path)
 
-def post_image_to_instagram(image, caption=""):
-    """Post image to Instagram feed using Instagram Graph API"""
+def post_image_to_instagram(image, caption="", max_retries=3):
+    """Post image to Instagram feed using Instagram Graph API with retry logic"""
     print("Posting to Instagram feed...")
 
+    # Apply post-processing enhancement first
+    enhanced_image = enhance_image_for_posting(image, "lifestyle")
+
     # Resize for Instagram feed (square 1:1 aspect ratio)
-    feed_image = resize_for_feed(image)
+    feed_image = resize_for_feed(enhanced_image)
 
     # Save to temporary file
     with tempfile.NamedTemporaryFile(suffix='.jpg', delete=False) as temp_file:
@@ -523,38 +563,80 @@ def post_image_to_instagram(image, caption=""):
 
         print(f"Media container created successfully. Creation ID: {creation_id}")
 
-        # Step 2: Publish the media
+        # Step 2: Publish the media with retry logic
         publish_url = f'https://graph.facebook.com/v23.0/{instagram_business_account_id}/media_publish'
         publish_data = {
             "access_token": access_token,
             "creation_id": creation_id
         }
 
-        publish_response = requests.post(publish_url, data=publish_data)
+        for attempt in range(max_retries):
+            try:
+                publish_response = requests.post(publish_url, data=publish_data)
 
-        if publish_response.status_code == 200:
-            result = publish_response.json()
-            if 'error' in result:
-                print(f"Instagram API Error: {result['error']}")
-                return None
+                if publish_response.status_code == 200:
+                    result = publish_response.json()
+                    if 'error' in result:
+                        error_message = result['error'].get('message', '').lower()
+                        if 'not ready for publishing' in error_message or 'media processing' in error_message:
+                            wait_time = (2 ** attempt) + 1  # Exponential backoff: 3, 5, 9 seconds
+                            print(f"⏳ Media not ready for publishing. Retrying in {wait_time} seconds... (Attempt {attempt + 1}/{max_retries})")
+                            time.sleep(wait_time)
+                            continue
+                        else:
+                            print(f"Instagram API Error: {result['error']}")
+                            return None
 
-            print(f"Successfully posted to Instagram feed. Media ID: {result.get('id')}")
-            return result
-        else:
-            print(f"HTTP Error {publish_response.status_code}: {publish_response.text}")
-            return None
+                    print(f"Successfully posted to Instagram feed. Media ID: {result.get('id')}")
+                    return result
+
+                # Handle HTTP errors with potential retry
+                elif publish_response.status_code == 400:
+                    try:
+                        error_data = publish_response.json()
+                        if 'error' in error_data:
+                            error_message = error_data['error'].get('message', '').lower()
+                            if 'not ready for publishing' in error_message or 'media processing' in error_message:
+                                wait_time = (2 ** attempt) + 1
+                                print(f"⏳ Media not ready for publishing. Retrying in {wait_time} seconds... (Attempt {attempt + 1}/{max_retries})")
+                                time.sleep(wait_time)
+                                continue
+                    except:
+                        pass
+
+                    if attempt == max_retries - 1:
+                        print(f"HTTP Error {publish_response.status_code}: {publish_response.text}")
+                        return None
+                else:
+                    if attempt == max_retries - 1:
+                        print(f"HTTP Error {publish_response.status_code}: {publish_response.text}")
+                        return None
+
+            except requests.exceptions.RequestException as e:
+                if attempt == max_retries - 1:
+                    print(f"Request exception: {e}")
+                    return None
+                wait_time = (2 ** attempt) + 1
+                print(f"⚠️  Request failed. Retrying in {wait_time} seconds... (Attempt {attempt + 1}/{max_retries})")
+                time.sleep(wait_time)
+
+        print(f"Failed to publish to Instagram feed after {max_retries} attempts")
+        return None
 
     finally:
         # Clean up temp file
         if os.path.exists(temp_file_path):
             os.unlink(temp_file_path)
 
-def post_story_to_instagram(image):
-    """Post image to Instagram Stories"""
+def post_story_to_instagram(image, max_retries=3):
+    """Post image to Instagram Stories with retry logic"""
     print("Posting to Instagram Stories...")
 
+    # Apply post-processing enhancement first
+    enhanced_image = enhance_image_for_posting(image, "portrait")
+
     # Resize for Instagram Stories (9:16 aspect ratio)
-    story_image = resize_for_stories(image)
+    story_image = resize_for_stories(enhanced_image)
 
     # Save to temporary file
     with tempfile.NamedTemporaryFile(suffix='.jpg', delete=False) as temp_file:
@@ -601,26 +683,65 @@ def post_story_to_instagram(image):
 
         print(f"Story media container created successfully. Creation ID: {creation_id}")
 
-        # Step 2: Publish the story
+        # Step 2: Publish the story with retry logic
         publish_url = f'https://graph.facebook.com/v23.0/{instagram_business_account_id}/media_publish'
         publish_data = {
             "access_token": access_token,
             "creation_id": creation_id
         }
 
-        publish_response = requests.post(publish_url, data=publish_data)
+        for attempt in range(max_retries):
+            try:
+                publish_response = requests.post(publish_url, data=publish_data)
 
-        if publish_response.status_code == 200:
-            result = publish_response.json()
-            if 'error' in result:
-                print(f"Instagram API Error: {result['error']}")
-                return None
+                if publish_response.status_code == 200:
+                    result = publish_response.json()
+                    if 'error' in result:
+                        error_message = result['error'].get('message', '').lower()
+                        if 'not ready for publishing' in error_message or 'media processing' in error_message:
+                            wait_time = (2 ** attempt) + 1  # Exponential backoff: 3, 5, 9 seconds
+                            print(f"⏳ Media not ready for publishing. Retrying in {wait_time} seconds... (Attempt {attempt + 1}/{max_retries})")
+                            time.sleep(wait_time)
+                            continue
+                        else:
+                            print(f"Instagram API Error: {result['error']}")
+                            return None
 
-            print(f"Successfully posted Instagram story. Media ID: {result.get('id')}")
-            return result
-        else:
-            print(f"HTTP Error {publish_response.status_code}: {publish_response.text}")
-            return None
+                    print(f"Successfully posted Instagram story. Media ID: {result.get('id')}")
+                    return result
+
+                # Handle HTTP errors with potential retry
+                elif publish_response.status_code == 400:
+                    try:
+                        error_data = publish_response.json()
+                        if 'error' in error_data:
+                            error_message = error_data['error'].get('message', '').lower()
+                            if 'not ready for publishing' in error_message or 'media processing' in error_message:
+                                wait_time = (2 ** attempt) + 1
+                                print(f"⏳ Media not ready for publishing. Retrying in {wait_time} seconds... (Attempt {attempt + 1}/{max_retries})")
+                                time.sleep(wait_time)
+                                continue
+                    except:
+                        pass
+
+                    if attempt == max_retries - 1:
+                        print(f"HTTP Error {publish_response.status_code}: {publish_response.text}")
+                        return None
+                else:
+                    if attempt == max_retries - 1:
+                        print(f"HTTP Error {publish_response.status_code}: {publish_response.text}")
+                        return None
+
+            except requests.exceptions.RequestException as e:
+                if attempt == max_retries - 1:
+                    print(f"Request exception: {e}")
+                    return None
+                wait_time = (2 ** attempt) + 1
+                print(f"⚠️  Request failed. Retrying in {wait_time} seconds... (Attempt {attempt + 1}/{max_retries})")
+                time.sleep(wait_time)
+
+        print(f"Failed to publish Instagram story after {max_retries} attempts")
+        return None
 
     finally:
         # Clean up temp file

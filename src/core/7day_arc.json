@@ -1,57 +1,57 @@
 {
-  "story_arc": "Visiting New York",
+  "story_arc": "Sexy week in Kolkata. rupashi super hot and sexy",
   "character_profile": "rupashi",
   "created_at": "now",
   "data_source": "api",
   "days": {
     "day_1": {
-      "story": "Arrival and First Impressions",
-      "location": "JFK Airport and Times Square",
-      "activity": "Rupashi arrives at JFK Airport, takes a cab to her hotel, and then heads to Times Square to soak in the vibrant atmosphere.",
-      "mood": "Excited and slightly overwhelmed",
-      "rough_prompt": "A young woman with a suitcase, standing in the middle of Times Square at night, surrounded by bright lights and bustling crowds."
+      "story": "Arrival in Kolkata",
+      "location": "Netaji Subhas Chandra Bose International Airport, Kolkata",
+      "activity": "Rupashi arrives in Kolkata, soaking in the vibrant energy and chaos of the city. She is excited to explore the cultural richness and the unique vibe of the city.",
+      "mood": "Excited and curious",
+      "rough_prompt": "A stylish young woman stepping out of an airport, with the bustling cityscape of Kolkata in the background, capturing her excitement and curiosity."
     },
     "day_2": {
-      "story": "Exploring Central Park",
-      "location": "Central Park",
-      "activity": "She spends the day wandering through Central Park, enjoying a peaceful walk, and having a picnic on the Great Lawn.",
-      "mood": "Relaxed and content",
-      "rough_prompt": "A young woman sitting on a picnic blanket in Central Park, surrounded by trees and the city skyline in the background."
+      "story": "Exploring Historic Kolkata",
+      "location": "Victoria Memorial, Kolkata",
+      "activity": "Rupashi spends the day exploring the historic Victoria Memorial, learning about the city's colonial past, and taking in the architectural beauty.",
+      "mood": "Reflective and appreciative",
+      "rough_prompt": "A woman in chic attire, standing in front of the majestic Victoria Memorial, looking thoughtful as she admires the grand architecture."
     },
     "day_3": {
-      "story": "Museum Hopping",
-      "location": "The Metropolitan Museum of Art and The Museum of Modern Art (MoMA)",
-      "activity": "Rupashi visits two iconic museums, immersing herself in art and culture.",
-      "mood": "Inspired and thoughtful",
-      "rough_prompt": "A woman gazing at a painting in a museum, with an expression of wonder, surrounded by famous artworks."
+      "story": "Shopping in New Market",
+      "location": "New Market (Hogg Market), Kolkata",
+      "activity": "She dives into the vibrant chaos of New Market, indulging in some retail therapy and interacting with local vendors.",
+      "mood": "Thrilled and adventurous",
+      "rough_prompt": "A fashionable woman amidst the colorful stalls of a bustling market, holding shopping bags, with a wide smile indicating her thrill and adventurous spirit."
     },
     "day_4": {
-      "story": "Shopping and Broadway Show",
-      "location": "Fifth Avenue and Broadway",
-      "activity": "She spends the morning shopping along Fifth Avenue and ends the day watching a Broadway show.",
-      "mood": "Thrilled and delighted",
-      "rough_prompt": "A young woman with shopping bags, standing in front of a Broadway theater marquee lit up at night."
+      "story": "Savoring Local Cuisine",
+      "location": "A popular Bengali restaurant in Kolkata",
+      "activity": "Rupashi enjoys a delicious Bengali meal, trying delicacies like fish curry and mishti doi (sweet yogurt).",
+      "mood": "Satisfied and delighted",
+      "rough_prompt": "A woman seated at a table laden with Bengali dishes, her expression one of delight and satisfaction as she takes a bite of an authentic local dish."
     },
     "day_5": {
-      "story": "A Day in Brooklyn",
-      "location": "Brooklyn Bridge and Williamsburg",
-      "activity": "She walks across the Brooklyn Bridge, explores the trendy streets of Williamsburg, and enjoys some local cuisine.",
-      "mood": "Adventurous and curious",
-      "rough_prompt": "A young woman walking across the Brooklyn Bridge, with the New York City skyline in the background."
+      "story": "Exploring Art and Culture",
+      "location": "Indian Museum, Kolkata",
+      "activity": "She visits the Indian Museum, taking her time to appreciate the vast collection of art and history.",
+      "mood": "Inspired and enlightened",
+      "rough_prompt": "A woman with an aura of elegance, standing in front of a beautiful artifact in the museum, with a look of inspiration and enlightenment on her face."
     },
     "day_6": {
-      "story": "Iconic Landmarks Tour",
-      "location": "Statue of Liberty and Empire State Building",
-      "activity": "Rupashi visits the Statue of Liberty and takes in panoramic views from the Empire State Building.",
-      "mood": "Awe-struck and proud",
-      "rough_prompt": "A woman looking out from the Empire State Building\u2019s observation deck, gazing at the city below."
+      "story": "Sunset at the Ganges",
+      "location": "Princep Ghat, Kolkata",
+      "activity": "Rupashi spends the evening at Princep Ghat, enjoying a serene boat ride on the Ganges and watching the sunset.",
+      "mood": "Peaceful and content",
+      "rough_prompt": "A woman on a small boat, gliding on the Ganges, as the sun sets in the background, her expression serene and content, capturing the peaceful moment."
     },
     "day_7": {
-      "story": "Reflective Farewell",
-      "location": "A cozy caf\u00e9 in Greenwich Village",
-      "activity": "She spends her last day in a cozy caf\u00e9, journaling about her trip and reflecting on her experiences.",
-      "mood": "Reflective and grateful",
-      "rough_prompt": "A woman sitting at a caf\u00e9 table by a window, pen in hand, with a steaming cup of coffee, looking thoughtfully out the window."
+      "story": "Nightlife in Park Street",
+      "location": "Park Street, Kolkata",
+      "activity": "She experiences the vibrant nightlife of Park Street, hopping between lively bars and cafes, and enjoying live music.",
+      "mood": "Joyful and exuberant",
+      "rough_prompt": "A glamorous woman in a trendy outfit, surrounded by the lively lights of Park Street, with a joyful expression as she enjoys a night out, capturing the exuberant atmosphere."
     }
   }
 }
