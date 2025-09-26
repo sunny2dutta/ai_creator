@@ -24,6 +24,9 @@ from utils.image_post_processor import ImagePostProcessor, enhance_ai_image, app
 # Set Google Cloud credentials
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/Users/debaryadutta/google_cloud_storage.json'
 
+# Post-processing control flag
+ENABLE_POST_PROCESSING = True  # Set to False to disable post-processing
+
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -282,7 +285,13 @@ def resize_for_feed(image):
 
 def enhance_image_for_posting(image, post_type="lifestyle"):
     """Apply post-processing to make AI images look more realistic before posting"""
-    print(f"Applying post-processing enhancement for {post_type}...")
+
+    # Check if post-processing is enabled
+    if not ENABLE_POST_PROCESSING:
+        print("📷 Post-processing disabled - using original image")
+        return image
+
+    print(f"🎨 Applying post-processing enhancement for {post_type}...")
 
     # Convert PIL Image to bytes for processing
     img_bytes = io.BytesIO()
