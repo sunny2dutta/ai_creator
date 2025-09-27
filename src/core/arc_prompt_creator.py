@@ -198,8 +198,14 @@ class ArcPromptCreator:
             }
         }
 
-    def save_story_arc(self, story_data: Dict[str, Any], output_file: str = "7day_arc.json") -> str:
+    def save_story_arc(self, story_data: Dict[str, Any], profile_name: str = None, output_file: str = None) -> str:
         """Save the story arc data to JSON file"""
+        if output_file is None:
+            if profile_name:
+                output_file = f"/Users/debaryadutta/ai_creator/data/arcs/{profile_name}_7day_arc.json"
+            else:
+                output_file = "7day_arc.json"
+
         with open(output_file, 'w') as f:
             json.dump(story_data, f, indent=2)
 
@@ -296,13 +302,14 @@ if __name__ == "__main__":
     creator = ArcPromptCreator()
 
     # Example 1: Travel story
-    story_arc = "durga puja week in Kolkata."
+    story_arc = "Durga Puja"
     story_data = creator.create_7_day_arc(story_arc, "rupashi")
 
     # Get user confirmation and allow editing
     confirmed_data = creator.confirm_and_edit_story_arc(story_data)
     if confirmed_data:
-        output_file = creator.save_story_arc(confirmed_data)
+        profile_name = confirmed_data.get('character_profile', 'rupashi')
+        output_file = creator.save_story_arc(confirmed_data, profile_name=profile_name)
         print(f"\n✅ Created 7-day arc for: {story_arc}")
         print(f"💾 Saved to: {output_file}")
     else:

@@ -25,7 +25,7 @@ from utils.image_post_processor import ImagePostProcessor, enhance_ai_image, app
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/Users/debaryadutta/google_cloud_storage.json'
 
 # Post-processing control flag
-ENABLE_POST_PROCESSING = True  # Set to False to disable post-processing
+ENABLE_POST_PROCESSING = False  # Set to False to disable post-processing
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -798,8 +798,8 @@ async def main():
             print("Could not extract prompt from JSON data")
             return
     else:
-        # Use the original prompt generation method
-        generator = PromptGenerator("/Users/debaryadutta/ai_creator/src/core/7day_arc.json")
+        # Use the profile-specific prompt generation method
+        generator = PromptGenerator(profile_name=args.profile)
         detailed_prompt = generator.generate_detailed_prompt()
         prompt, caption = extract_prompt_from_json(detailed_prompt)
         print("Prompt",prompt)

@@ -10,8 +10,13 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 
 class PromptGenerator:
-    def __init__(self, seven_day_arc_path: str = "7day_arc.json"):
-        self.seven_day_arc_path = seven_day_arc_path
+    def __init__(self, profile_name: str = "rupashi", seven_day_arc_path: str = None):
+        self.profile_name = profile_name
+        if seven_day_arc_path is None:
+            # Use profile-specific arc file
+            self.seven_day_arc_path = f"/Users/debaryadutta/ai_creator/data/arcs/{profile_name}_7day_arc.json"
+        else:
+            self.seven_day_arc_path = seven_day_arc_path
         self.seven_day_data = self._load_seven_day_arc()
         self.openai_api_key = os.getenv('OPENAI_API_KEY')
         if self.openai_api_key:

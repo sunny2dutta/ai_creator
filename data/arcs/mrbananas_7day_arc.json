@@ -1,0 +1,57 @@
+{
+  "story_arc": "Placeholder - Will add later",
+  "character_profile": "mr.bananas",
+  "created_at": "now",
+  "data_source": "placeholder",
+  "days": {
+    "day_1": {
+      "story": "Placeholder content",
+      "location": "TBD",
+      "activity": "TBD",
+      "mood": "TBD",
+      "rough_prompt": "Placeholder prompt"
+    },
+    "day_2": {
+      "story": "Placeholder content",
+      "location": "TBD",
+      "activity": "TBD",
+      "mood": "TBD",
+      "rough_prompt": "Placeholder prompt"
+    },
+    "day_3": {
+      "story": "Placeholder content",
+      "location": "TBD",
+      "activity": "TBD",
+      "mood": "TBD",
+      "rough_prompt": "Placeholder prompt"
+    },
+    "day_4": {
+      "story": "Placeholder content",
+      "location": "TBD",
+      "activity": "TBD",
+      "mood": "TBD",
+      "rough_prompt": "Placeholder prompt"
+    },
+    "day_5": {
+      "story": "Placeholder content",
+      "location": "TBD",
+      "activity": "TBD",
+      "mood": "TBD",
+      "rough_prompt": "Placeholder prompt"
+    },
+    "day_6": {
+      "story": "Placeholder content",
+      "location": "TBD",
+      "activity": "TBD",
+      "mood": "TBD",
+      "rough_prompt": "Placeholder prompt"
+    },
+    "day_7": {
+      "story": "Placeholder content",
+      "location": "TBD",
+      "activity": "TBD",
+      "mood": "TBD",
+      "rough_prompt": "Placeholder prompt"
+    }
+  }
+}
