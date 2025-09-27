@@ -1,0 +1,87 @@
+{
+  "profile_name": "mrbananas",
+  "topic": "chimpanzee intern dreaming of being CEO",
+  "categories": {
+    "Office Professional": {
+      "starter_prompts": [
+        "Professional chimpanzee in business suit at corporate office desk",
+        "Ambitious intern chimp reviewing business documents with determination",
+        "Corporate chimpanzee attending board meeting with confident posture",
+        "Business-minded chimp presenting ideas on whiteboard to colleagues",
+        "Professional primate in suit networking at corporate event",
+        "Focused intern chimpanzee working late at office with city lights background"
+      ],
+      "clothing_hints": [
+        "tailored business suit with tie",
+        "professional blazer and dress shirt",
+        "polished dress shoes",
+        "briefcase or laptop bag",
+        "subtle watch and professional accessories"
+      ]
+    },
+    "CEO Aspirations": {
+      "starter_prompts": [
+        "Visionary chimpanzee CEO in corner office overlooking city skyline",
+        "Leadership-focused chimp giving inspirational speech to team",
+        "Executive chimpanzee making strategic decisions in boardroom",
+        "Ambitious primate reviewing company growth charts with satisfaction",
+        "CEO-minded chimp mentoring younger employees with wisdom",
+        "Future executive chimpanzee planning company expansion strategy"
+      ],
+      "clothing_hints": [
+        "executive-level tailored suit",
+        "luxury tie and cufflinks",
+        "presidential leather chair setting",
+        "sophisticated office environment",
+        "leadership confidence in posture"
+      ]
+    },
+    "Learning and Growth": {
+      "starter_prompts": [
+        "Studious chimpanzee reading business books during lunch break",
+        "Intern chimp attending professional development workshop",
+        "Determined primate taking notes in leadership training session",
+        "Ambitious chimpanzee practicing presentation skills in empty conference room",
+        "Learning-focused chimp researching industry trends on computer",
+        "Growth-minded intern shadowing senior executives"
+      ],
+      "clothing_hints": [
+        "business casual with notebook",
+        "professional but approachable attire",
+        "learning materials and laptop",
+        "conference room or classroom setting",
+        "eager and attentive expression"
+      ]
+    },
+    "Dream Sequences": {
+      "starter_prompts": [
+        "Chimpanzee dreaming of corner office with CEO nameplate",
+        "Ambitious intern visualizing success with company logo backdrop",
+        "Dreaming chimp imagining ringing opening bell at stock exchange",
+        "Visionary primate picturing company IPO celebration",
+        "CEO-dreaming chimpanzee imagining Forbes magazine cover feature",
+        "Ambitious intern chimp visualizing leading global business summit"
+      ],
+      "clothing_hints": [
+        "aspirational executive wardrobe",
+        "dream-like lighting and atmosphere",
+        "success symbols and corporate imagery",
+        "confident and visionary expression",
+        "luxury office environment backdrop"
+      ]
+    }
+  },
+  "style_preferences": {
+    "lighting": "corporate office lighting with professional ambiance",
+    "camera": "Canon EOS R5, 85mm f/1.2 RF lens",
+    "quality": "8k photo, ultra-realistic business portrait",
+    "background": "modern corporate offices, boardrooms, or city skyline views"
+  },
+  "base_images": [
+    "professional_chimp_base_1.jpg",
+    "corporate_intern_base_2.jpg",
+    "business_meeting_base_3.jpg",
+    "office_environment_base_4.jpg",
+    "executive_aspirations_base_5.jpg"
+  ]
+}

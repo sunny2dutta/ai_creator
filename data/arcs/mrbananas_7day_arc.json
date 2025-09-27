@@ -1,57 +1,57 @@
 {
-  "story_arc": "Placeholder - Will add later",
-  "character_profile": "mr.bananas",
+  "story_arc": "Beach Holiday",
+  "character_profile": "mrbananas",
   "created_at": "now",
-  "data_source": "placeholder",
+  "data_source": "api",
   "days": {
     "day_1": {
-      "story": "Placeholder content",
-      "location": "TBD",
-      "activity": "TBD",
-      "mood": "TBD",
-      "rough_prompt": "Placeholder prompt"
+      "story": "Arrival at the Beachside Retreat",
+      "location": "A cozy beachside bungalow",
+      "activity": "Unpacking and exploring the bungalow",
+      "mood": "Excited and curious",
+      "rough_prompt": "A cheerful character with a banana motif, standing in a bungalow filled with beach gear and decor, with a view of the ocean from the window."
     },
     "day_2": {
-      "story": "Placeholder content",
-      "location": "TBD",
-      "activity": "TBD",
-      "mood": "TBD",
-      "rough_prompt": "Placeholder prompt"
+      "story": "Morning Walk on the Beach",
+      "location": "A serene, sandy beach at sunrise",
+      "activity": "Strolling along the shoreline, collecting seashells",
+      "mood": "Peaceful and reflective",
+      "rough_prompt": "A character with banana-themed accessories walking barefoot on the beach, holding a collection of colorful seashells, with the sunrise casting a warm glow."
     },
     "day_3": {
-      "story": "Placeholder content",
-      "location": "TBD",
-      "activity": "TBD",
-      "mood": "TBD",
-      "rough_prompt": "Placeholder prompt"
+      "story": "Surfing Lessons",
+      "location": "A bustling surf school near the beach",
+      "activity": "Taking a beginner's surfing lesson",
+      "mood": "Nervous but determined",
+      "rough_prompt": "A character in a banana-patterned wetsuit, balancing on a surfboard in the water, with an instructor offering encouragement, waves in the background."
     },
     "day_4": {
-      "story": "Placeholder content",
-      "location": "TBD",
-      "activity": "TBD",
-      "mood": "TBD",
-      "rough_prompt": "Placeholder prompt"
+      "story": "Exploring the Local Market",
+      "location": "A vibrant local market filled with stalls",
+      "activity": "Browsing and tasting local delicacies",
+      "mood": "Adventurous and sociable",
+      "rough_prompt": "A character wearing a banana-themed hat, sampling tropical fruits and chatting with friendly market vendors, colorful stalls in the background."
     },
     "day_5": {
-      "story": "Placeholder content",
-      "location": "TBD",
-      "activity": "TBD",
-      "mood": "TBD",
-      "rough_prompt": "Placeholder prompt"
+      "story": "Relaxing Afternoon at the Beach",
+      "location": "A quiet section of the beach with a hammock",
+      "activity": "Reading a book in a hammock under a palm tree",
+      "mood": "Content and relaxed",
+      "rough_prompt": "A character lounging in a hammock, wearing sunglasses with a banana print design, holding a book, with the sea breeze gently rustling the palm leaves."
     },
     "day_6": {
-      "story": "Placeholder content",
-      "location": "TBD",
-      "activity": "TBD",
-      "mood": "TBD",
-      "rough_prompt": "Placeholder prompt"
+      "story": "Sunset Picnic",
+      "location": "A picturesque spot overlooking the ocean",
+      "activity": "Enjoying a picnic while watching the sunset",
+      "mood": "Grateful and serene",
+      "rough_prompt": "A character sitting on a picnic blanket, surrounded by picnic items with banana-themed packaging, watching the sun dip below the horizon, casting a golden hue."
     },
     "day_7": {
-      "story": "Placeholder content",
-      "location": "TBD",
-      "activity": "TBD",
-      "mood": "TBD",
-      "rough_prompt": "Placeholder prompt"
+      "story": "Reflective Farewell Walk",
+      "location": "The beach at dawn",
+      "activity": "Taking a final walk along the beach, reflecting on the trip",
+      "mood": "Melancholic yet fulfilled",
+      "rough_prompt": "A character with a banana-patterned backpack, walking along the beach with gentle waves lapping at their feet, the first light of dawn breaking, capturing a sense of closure and new beginnings."
     }
   }
 }

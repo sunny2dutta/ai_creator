@@ -27,7 +27,7 @@ class ArcPromptCreator:
         if self.openai_api_key:
             openai.api_key = self.openai_api_key
 
-    def create_7_day_arc(self, story_arc: str, character_profile: str = "rupashi") -> Dict[str, Any]:
+    def create_7_day_arc(self, story_arc: str, character_profile: str = "mrbananas") -> Dict[str, Any]:
         """
         Break down a simple story arc into 7 days of detailed story progression
 
@@ -302,13 +302,13 @@ if __name__ == "__main__":
     creator = ArcPromptCreator()
 
     # Example 1: Travel story
-    story_arc = "Durga Puja"
-    story_data = creator.create_7_day_arc(story_arc, "rupashi")
+    story_arc = "Beach Holiday"
+    story_data = creator.create_7_day_arc(story_arc, "mrbananas")
 
     # Get user confirmation and allow editing
     confirmed_data = creator.confirm_and_edit_story_arc(story_data)
     if confirmed_data:
-        profile_name = confirmed_data.get('character_profile', 'rupashi')
+        profile_name = confirmed_data.get('character_profile', 'mrbananas')
         output_file = creator.save_story_arc(confirmed_data, profile_name=profile_name)
         print(f"\n✅ Created 7-day arc for: {story_arc}")
         print(f"💾 Saved to: {output_file}")

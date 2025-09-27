@@ -13,7 +13,7 @@
         "instagram_business_id_env": "INSTAGRAM_BUSINESS_ID_MRBANANAS",
         "access_token_env": "FACEBOOK_LONG_ACCESS_TOKEN_MRBANANAS",
         "prompt_file": "mrbananas.json",
-        "description": "Chimpanzee having fun in life",
+        "description": "Chimpanzee who is an intern in a big company dreaming of being CEO",
         "active": true
       }
   }
