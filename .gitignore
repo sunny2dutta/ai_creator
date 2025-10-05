@@ -2,3 +2,6 @@
 newenv.txt
 *venv*
 .env
+*.jpg
+*.png
+*.mp4
