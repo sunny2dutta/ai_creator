@@ -78,10 +78,7 @@
     "background": "modern corporate offices, boardrooms, or city skyline views"
   },
   "base_images": [
-    "professional_chimp_base_1.jpg",
-    "corporate_intern_base_2.jpg",
-    "business_meeting_base_3.jpg",
-    "office_environment_base_4.jpg",
-    "executive_aspirations_base_5.jpg"
+    "https://storage.googleapis.com/ai-creator-debarya/mrbananas1.png",
+    "https://storage.googleapis.com/ai-creator-debarya/mrbananas2.png"
   ]
 }

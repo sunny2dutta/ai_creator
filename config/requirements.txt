@@ -16,3 +16,4 @@ google.cloud
 google-cloud-storage
 openai
 dotenv
+langfuse>=2.0.0

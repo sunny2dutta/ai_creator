@@ -12,6 +12,8 @@ import tempfile
 import subprocess
 from dotenv import load_dotenv
 import datetime
+import argparse
+from langfuse import Langfuse
 
 # Load environment variables from .env file
 load_dotenv()
@@ -26,6 +28,18 @@ class ArcPromptCreator:
         self.openai_api_key = os.getenv('OPENAI_API_KEY')
         if self.openai_api_key:
             openai.api_key = self.openai_api_key
+        
+        # Initialize Langfuse for tracing
+        self.langfuse_client = None
+        if os.getenv('LANGFUSE_PUBLIC_KEY') and os.getenv('LANGFUSE_SECRET_KEY'):
+            try:
+                self.langfuse_client = Langfuse(
+                    public_key=os.getenv('LANGFUSE_PUBLIC_KEY'),
+                    secret_key=os.getenv('LANGFUSE_SECRET_KEY'),
+                    host=os.getenv('LANGFUSE_HOST', 'https://cloud.langfuse.com')
+                )
+            except Exception as e:
+                logger.warning(f"Could not initialize Langfuse: {e}")
 
     def create_7_day_arc(self, story_arc: str, character_profile: str = "mrbananas") -> Dict[str, Any]:
         """
@@ -38,6 +52,10 @@ class ArcPromptCreator:
         Returns:
             JSON structure with 7 days of story details
         """
+        # Create a trace_id for this operation
+        trace_id = None
+        if self.langfuse_client:
+            trace_id = self.langfuse_client.create_trace_id()
 
         if not self.openai_api_key:
             fallback_data = self._fallback_story_breakdown(story_arc, character_profile)
@@ -45,6 +63,18 @@ class ArcPromptCreator:
             return fallback_data
 
         try:
+            # Create generation for OpenAI call
+            generation = None
+            if self.langfuse_client:
+                generation = self.langfuse_client.start_generation(
+                    name="openai_7day_arc",
+                    model="gpt-4o",
+                    input=[
+                        {"role": "system", "content": self._get_system_prompt()},
+                        {"role": "user", "content": f"Create a 7-day story progression for: '{story_arc}' featuring character '{character_profile}'"}
+                    ]
+                )
+
             response = openai.chat.completions.create(
                 model="gpt-4o",
                 messages=[
@@ -63,6 +93,19 @@ class ArcPromptCreator:
 
             # Parse the AI response to extract structured data
             ai_response = response.choices[0].message.content.strip()
+            
+            # Update generation with response
+            if generation:
+                generation.update(
+                    output=ai_response,
+                    usage_details={
+                        "prompt_tokens": response.usage.prompt_tokens,
+                        "completion_tokens": response.usage.completion_tokens,
+                        "total_tokens": response.usage.total_tokens
+                    }
+                )
+                generation.end()
+            
             story_data = self._parse_ai_response_to_json(ai_response, story_arc, character_profile)
             story_data["data_source"] = "api"
 
@@ -70,6 +113,7 @@ class ArcPromptCreator:
 
         except Exception as e:
             logger.error(f"Error creating 7-day arc with AI: {e}")
+            
             fallback_data = self._fallback_story_breakdown(story_arc, character_profile)
             fallback_data["data_source"] = "fallback"
             return fallback_data
@@ -297,23 +341,25 @@ class ArcPromptCreator:
 
 # Example usage and testing
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Create 7-day story arc from simple story description')
+    parser.add_argument('text', help='Story arc text/description (e.g., "Beach Holiday")')
+    parser.add_argument('character', help='Character profile name (e.g., "mrbananas")')
+    parser.add_argument('--output', help='Output file path (optional)')
+    
+    args = parser.parse_args()
 
     # Test the arc prompt creator
     creator = ArcPromptCreator()
 
-    # Example 1: Travel story
-    story_arc = "Beach Holiday"
-    story_data = creator.create_7_day_arc(story_arc, "mrbananas")
+    # Create story arc from command line arguments
+    story_data = creator.create_7_day_arc(args.text, args.character)
 
     # Get user confirmation and allow editing
     confirmed_data = creator.confirm_and_edit_story_arc(story_data)
     if confirmed_data:
-        profile_name = confirmed_data.get('character_profile', 'mrbananas')
-        output_file = creator.save_story_arc(confirmed_data, profile_name=profile_name)
-        print(f"\n✅ Created 7-day arc for: {story_arc}")
+        profile_name = confirmed_data.get('character_profile', args.character)
+        output_file = creator.save_story_arc(confirmed_data, profile_name=profile_name, output_file=args.output)
+        print(f"\n✅ Created 7-day arc for: {args.text}")
         print(f"💾 Saved to: {output_file}")
     else:
         print("❌ Story arc creation cancelled.")
-
-
-    # Get user confirmation and allow editing

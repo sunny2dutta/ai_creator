@@ -1,0 +1,150 @@
+2025-10-03 06:54:56,939 - __main__ - INFO - Langfuse tracing initialized
+2025-10-03 06:54:56,941 - __main__ - INFO - Credentials set for profile: unknown
+2025-10-03 06:54:56,942 - prompt_generator - INFO - Successfully loaded 7-day arc data with 7 days
+2025-10-03 06:55:07,073 - prompt_generator - INFO - Detailed prompt generated for day 5 using llm method
+2025-10-03 06:55:07,321 - __main__ - INFO - Editing 5 images with FAL AI
+2025-10-03 06:56:30,208 - __main__ - INFO - Langfuse tracing initialized
+2025-10-03 06:56:30,209 - __main__ - INFO - Credentials set for profile: unknown
+2025-10-03 06:56:30,210 - prompt_generator - INFO - Successfully loaded 7-day arc data with 7 days
+2025-10-03 06:56:38,158 - prompt_generator - INFO - Detailed prompt generated for day 5 using llm method
+2025-10-03 06:56:38,161 - __main__ - INFO - Editing 5 images with FAL AI
+2025-10-03 06:57:11,371 - __main__ - INFO - Image editing completed in 33.21s
+2025-10-03 06:57:14,132 - __main__ - INFO - Successfully edited 1 images
+2025-10-03 06:57:14,189 - __main__ - INFO - Posting image to Facebook feed…
+2025-10-03 06:57:14,189 - __main__ - INFO - Post-processing disabled - using original image
+2025-10-03 06:57:19,737 - __main__ - INFO - Successfully uploaded to GCS: facebook_1296251f6c0146958b15fdf7fbb0ca6f.jpg
+2025-10-03 06:57:19,738 - __main__ - INFO - Image uploaded to GCS: https://storage.googleapis.com/ai-creator-debarya/facebook_1296251f6c0146958b15fdf7fbb0ca6f.jpg
+2025-10-03 06:57:26,624 - __main__ - INFO - Successfully posted to Facebook feed. Post ID: 122107417647012017
+2025-10-03 06:57:26,634 - __main__ - INFO - Posting image to Facebook Stories…
+2025-10-03 06:57:26,634 - __main__ - INFO - Post-processing disabled - using original image
+2025-10-03 06:57:31,775 - __main__ - INFO - Photo uploaded successfully. Photo ID: 122107417701012017
+2025-10-03 06:57:37,516 - __main__ - INFO - Successfully posted Facebook story. Story ID: None
+2025-10-03 06:57:37,523 - __main__ - INFO - Posting image to Instagram feed…
+2025-10-03 06:57:37,523 - __main__ - INFO - Post-processing disabled - using original image
+2025-10-03 06:57:42,604 - __main__ - INFO - Successfully uploaded to GCS: instagram_e011c657e1cf4d9d9c362bded74f15e3.jpg
+2025-10-03 06:57:42,605 - __main__ - INFO - Image uploaded to GCS: https://storage.googleapis.com/ai-creator-debarya/instagram_e011c657e1cf4d9d9c362bded74f15e3.jpg
+2025-10-03 06:57:50,329 - __main__ - INFO - Media container created successfully. Creation ID: 17850390228560753
+2025-10-03 06:57:54,319 - __main__ - INFO - Successfully posted to Instagram feed. Media ID: 18115711621529501
+2025-10-03 06:57:54,327 - __main__ - INFO - Posting image to Instagram Stories…
+2025-10-03 06:57:54,328 - __main__ - INFO - Post-processing disabled - using original image
+2025-10-03 06:58:00,459 - __main__ - INFO - Successfully uploaded to GCS: instagram_story_1b9ec3c28a4e4acca07d947090529e62.jpg
+2025-10-03 06:58:09,373 - __main__ - INFO - Story media container created successfully. Creation ID: 17850390315560753
+2025-10-03 06:58:11,867 - __main__ - INFO - Successfully posted Instagram story. Media ID: 17897082309308635
+2025-10-03 06:58:11,879 - __main__ - INFO - Successfully posted to: Facebook feed, Facebook stories, Instagram feed, Instagram stories
+2025-10-03 06:58:11,880 - __main__ - INFO - Successfully posted to all platforms!
+2025-10-03 20:54:23,966 - __main__ - INFO - Langfuse tracing initialized
+2025-10-03 20:54:23,968 - __main__ - INFO - Credentials set for profile: unknown
+2025-10-03 20:54:23,968 - prompt_generator - INFO - Successfully loaded 7-day arc data with 7 days
+2025-10-03 20:54:32,434 - prompt_generator - INFO - Detailed prompt generated for day 5 using llm method
+2025-10-03 20:54:32,440 - __main__ - INFO - Editing 2 images with FAL AI
+2025-10-03 20:55:02,687 - __main__ - INFO - Image editing completed in 30.25s
+2025-10-03 20:55:03,540 - __main__ - INFO - Successfully edited 1 images
+2025-10-03 20:55:03,600 - __main__ - INFO - Posting image to Facebook feed…
+2025-10-03 20:55:03,601 - __main__ - INFO - Post-processing disabled - using original image
+2025-10-03 20:55:09,117 - __main__ - INFO - Successfully uploaded to GCS: facebook_93001607b895458995e29ee78b5d30f2.jpg
+2025-10-03 20:55:09,118 - __main__ - INFO - Image uploaded to GCS: https://storage.googleapis.com/ai-creator-debarya/facebook_93001607b895458995e29ee78b5d30f2.jpg
+2025-10-03 20:55:13,977 - __main__ - INFO - Successfully posted to Facebook feed. Post ID: 122107659291014727
+2025-10-03 20:55:13,984 - __main__ - INFO - Posting image to Facebook Stories…
+2025-10-03 20:55:13,984 - __main__ - INFO - Post-processing disabled - using original image
+2025-10-03 20:55:17,419 - __main__ - INFO - Photo uploaded successfully. Photo ID: 122107659375014727
+2025-10-03 20:55:25,962 - __main__ - INFO - Successfully posted Facebook story. Story ID: None
+2025-10-03 20:55:25,976 - __main__ - INFO - Posting image to Instagram feed…
+2025-10-03 20:55:25,976 - __main__ - INFO - Post-processing disabled - using original image
+2025-10-03 20:55:29,438 - __main__ - INFO - Successfully uploaded to GCS: instagram_0f73cb9803674ea48b8121889634f0fd.jpg
+2025-10-03 20:55:29,438 - __main__ - INFO - Image uploaded to GCS: https://storage.googleapis.com/ai-creator-debarya/instagram_0f73cb9803674ea48b8121889634f0fd.jpg
+2025-10-03 20:55:34,344 - __main__ - INFO - Media container created successfully. Creation ID: 17848224039571898
+2025-10-03 20:55:37,421 - __main__ - INFO - Successfully posted to Instagram feed. Media ID: 18040163120673299
+2025-10-03 20:55:37,431 - __main__ - INFO - Posting image to Instagram Stories…
+2025-10-03 20:55:37,432 - __main__ - INFO - Post-processing disabled - using original image
+2025-10-03 20:55:42,925 - __main__ - INFO - Successfully uploaded to GCS: instagram_story_0916e6cc41de4b8dac08be1ce63e1017.jpg
+2025-10-03 20:55:46,080 - __main__ - INFO - Story media container created successfully. Creation ID: 17848224084571898
+2025-10-03 20:55:48,179 - __main__ - INFO - Successfully posted Instagram story. Media ID: 18336048532207177
+2025-10-03 20:55:48,187 - __main__ - INFO - Successfully posted to: Facebook feed, Facebook stories, Instagram feed, Instagram stories
+2025-10-03 20:55:48,187 - __main__ - INFO - Successfully posted to all platforms!
+2025-10-04 08:12:33,755 - __main__ - INFO - Langfuse tracing initialized
+2025-10-04 08:12:33,757 - __main__ - INFO - Credentials set for profile: unknown
+2025-10-04 08:12:33,758 - prompt_generator - INFO - Successfully loaded 7-day arc data with 7 days
+2025-10-04 08:12:44,202 - prompt_generator - INFO - Detailed prompt generated for day 6 using llm method
+2025-10-04 08:12:44,208 - __main__ - INFO - Editing 2 images with FAL AI
+2025-10-04 08:13:12,207 - __main__ - INFO - Image editing completed in 28.00s
+2025-10-04 08:13:14,820 - __main__ - INFO - Successfully edited 1 images
+2025-10-04 08:13:14,881 - __main__ - INFO - Posting image to Facebook feed…
+2025-10-04 08:13:14,882 - __main__ - INFO - Post-processing disabled - using original image
+2025-10-04 08:13:20,660 - __main__ - INFO - Successfully uploaded to GCS: facebook_90afa325bdd1451e934b34e082fa3f7d.jpg
+2025-10-04 08:13:20,661 - __main__ - INFO - Image uploaded to GCS: https://storage.googleapis.com/ai-creator-debarya/facebook_90afa325bdd1451e934b34e082fa3f7d.jpg
+2025-10-04 08:13:24,938 - __main__ - INFO - Successfully posted to Facebook feed. Post ID: 122107788165014727
+2025-10-04 08:13:24,944 - __main__ - INFO - Posting image to Facebook Stories…
+2025-10-04 08:13:24,944 - __main__ - INFO - Post-processing disabled - using original image
+2025-10-04 08:13:28,556 - __main__ - INFO - Photo uploaded successfully. Photo ID: 122107788231014727
+2025-10-04 08:13:34,634 - __main__ - INFO - Successfully posted Facebook story. Story ID: None
+2025-10-04 08:13:34,644 - __main__ - INFO - Posting image to Instagram feed…
+2025-10-04 08:13:34,644 - __main__ - INFO - Post-processing disabled - using original image
+2025-10-04 08:13:38,126 - __main__ - INFO - Successfully uploaded to GCS: instagram_f0875fd88a0545f39ee2980bc977f57b.jpg
+2025-10-04 08:13:38,126 - __main__ - INFO - Image uploaded to GCS: https://storage.googleapis.com/ai-creator-debarya/instagram_f0875fd88a0545f39ee2980bc977f57b.jpg
+2025-10-04 08:13:42,309 - __main__ - INFO - Media container created successfully. Creation ID: 17848308846571898
+2025-10-04 08:13:45,182 - __main__ - INFO - Successfully posted to Instagram feed. Media ID: 18085912123921976
+2025-10-04 08:13:45,192 - __main__ - INFO - Posting image to Instagram Stories…
+2025-10-04 08:13:45,192 - __main__ - INFO - Post-processing disabled - using original image
+2025-10-04 08:13:50,534 - __main__ - INFO - Successfully uploaded to GCS: instagram_story_576c87d7a53946e9a70708c82dcb44b6.jpg
+2025-10-04 08:13:54,251 - __main__ - INFO - Story media container created successfully. Creation ID: 17848308879571898
+2025-10-04 08:13:56,007 - __main__ - INFO - Successfully posted Instagram story. Media ID: 18153673669402692
+2025-10-04 08:13:56,013 - __main__ - INFO - Successfully posted to: Facebook feed, Facebook stories, Instagram feed, Instagram stories
+2025-10-04 08:13:56,014 - __main__ - INFO - Successfully posted to all platforms!
+2025-10-04 08:14:22,599 - __main__ - INFO - Langfuse tracing initialized
+2025-10-04 08:14:22,601 - __main__ - INFO - Credentials set for profile: unknown
+2025-10-04 08:14:22,601 - prompt_generator - INFO - Successfully loaded 7-day arc data with 7 days
+2025-10-04 08:14:31,716 - prompt_generator - INFO - Detailed prompt generated for day 6 using llm method
+2025-10-04 08:14:31,719 - __main__ - INFO - Editing 5 images with FAL AI
+2025-10-04 08:15:07,025 - __main__ - INFO - Image editing completed in 35.30s
+2025-10-04 08:15:09,243 - __main__ - INFO - Successfully edited 1 images
+2025-10-04 08:15:09,285 - __main__ - INFO - Posting image to Facebook feed…
+2025-10-04 08:15:09,285 - __main__ - INFO - Post-processing disabled - using original image
+2025-10-04 08:15:14,608 - __main__ - INFO - Successfully uploaded to GCS: facebook_ca0de84a0a9d49a388c0ed2cf20424ee.jpg
+2025-10-04 08:15:14,610 - __main__ - INFO - Image uploaded to GCS: https://storage.googleapis.com/ai-creator-debarya/facebook_ca0de84a0a9d49a388c0ed2cf20424ee.jpg
+2025-10-04 08:15:18,548 - __main__ - INFO - Successfully posted to Facebook feed. Post ID: 122108056209012017
+2025-10-04 08:15:18,564 - __main__ - INFO - Posting image to Facebook Stories…
+2025-10-04 08:15:18,565 - __main__ - INFO - Post-processing disabled - using original image
+2025-10-04 08:15:21,323 - __main__ - INFO - Photo uploaded successfully. Photo ID: 122108056263012017
+2025-10-04 08:15:26,074 - __main__ - INFO - Successfully posted Facebook story. Story ID: None
+2025-10-04 08:15:26,085 - __main__ - INFO - Posting image to Instagram feed…
+2025-10-04 08:15:26,085 - __main__ - INFO - Post-processing disabled - using original image
+2025-10-04 08:15:31,279 - __main__ - INFO - Successfully uploaded to GCS: instagram_8240fca694064b6898577c30711e445b.jpg
+2025-10-04 08:15:31,281 - __main__ - INFO - Image uploaded to GCS: https://storage.googleapis.com/ai-creator-debarya/instagram_8240fca694064b6898577c30711e445b.jpg
+2025-10-04 08:15:35,143 - __main__ - INFO - Media container created successfully. Creation ID: 17850521370560753
+2025-10-04 08:15:37,967 - __main__ - INFO - Successfully posted to Instagram feed. Media ID: 18065818082458391
+2025-10-04 08:15:37,975 - __main__ - INFO - Posting image to Instagram Stories…
+2025-10-04 08:15:37,976 - __main__ - INFO - Post-processing disabled - using original image
+2025-10-04 08:15:43,613 - __main__ - INFO - Successfully uploaded to GCS: instagram_story_1b2311823502460cacbda2fb11e6777e.jpg
+2025-10-04 08:15:49,112 - __main__ - INFO - Story media container created successfully. Creation ID: 17850521385560753
+2025-10-04 08:15:51,105 - __main__ - INFO - Successfully posted Instagram story. Media ID: 18239521888293393
+2025-10-04 08:15:51,121 - __main__ - INFO - Successfully posted to: Facebook feed, Facebook stories, Instagram feed, Instagram stories
+2025-10-04 08:15:51,121 - __main__ - INFO - Successfully posted to all platforms!
+2025-10-05 13:45:40,168 - __main__ - INFO - Langfuse tracing initialized
+2025-10-05 13:45:40,171 - __main__ - INFO - Credentials set for profile: unknown
+2025-10-05 13:45:40,171 - prompt_generator - INFO - Successfully loaded 7-day arc data with 7 days
+2025-10-05 13:45:49,728 - prompt_generator - INFO - Detailed prompt generated for day 7 using llm method
+2025-10-05 13:45:49,731 - __main__ - INFO - Editing 5 images with FAL AI
+2025-10-05 13:46:44,227 - __main__ - INFO - Image editing completed in 54.50s
+2025-10-05 13:46:46,085 - __main__ - INFO - Successfully edited 1 images
+2025-10-05 13:46:46,128 - __main__ - INFO - Posting image to Facebook feed…
+2025-10-05 13:46:46,128 - __main__ - INFO - Post-processing disabled - using original image
+2025-10-05 13:46:50,467 - __main__ - INFO - Successfully uploaded to GCS: facebook_1538fdaecfcf442da716bffdb0f211db.jpg
+2025-10-05 13:46:50,468 - __main__ - INFO - Image uploaded to GCS: https://storage.googleapis.com/ai-creator-debarya/facebook_1538fdaecfcf442da716bffdb0f211db.jpg
+2025-10-05 13:46:56,291 - __main__ - INFO - Successfully posted to Facebook feed. Post ID: 122108248665012017
+2025-10-05 13:46:56,296 - __main__ - INFO - Posting image to Facebook Stories…
+2025-10-05 13:46:56,296 - __main__ - INFO - Post-processing disabled - using original image
+2025-10-05 13:46:59,390 - __main__ - INFO - Photo uploaded successfully. Photo ID: 122108248737012017
+2025-10-05 13:47:06,294 - __main__ - INFO - Successfully posted Facebook story. Story ID: None
+2025-10-05 13:47:06,308 - __main__ - INFO - Posting image to Instagram feed…
+2025-10-05 13:47:06,308 - __main__ - INFO - Post-processing disabled - using original image
+2025-10-05 13:47:10,623 - __main__ - INFO - Successfully uploaded to GCS: instagram_e61ccdc8298d4a3d98c7164cf8da360f.jpg
+2025-10-05 13:47:10,624 - __main__ - INFO - Image uploaded to GCS: https://storage.googleapis.com/ai-creator-debarya/instagram_e61ccdc8298d4a3d98c7164cf8da360f.jpg
+2025-10-05 13:47:15,799 - __main__ - INFO - Media container created successfully. Creation ID: 17850682137560753
+2025-10-05 13:47:18,392 - __main__ - INFO - Successfully posted to Instagram feed. Media ID: 18054342971537370
+2025-10-05 13:47:18,403 - __main__ - INFO - Posting image to Instagram Stories…
+2025-10-05 13:47:18,404 - __main__ - INFO - Post-processing disabled - using original image
+2025-10-05 13:47:23,582 - __main__ - INFO - Successfully uploaded to GCS: instagram_story_ee94083212bd402380bfa5c687e7c09d.jpg
+2025-10-05 13:47:28,002 - __main__ - INFO - Story media container created successfully. Creation ID: 17850682158560753
+2025-10-05 13:47:30,291 - __main__ - INFO - Successfully posted Instagram story. Media ID: 18531641134065426
+2025-10-05 13:47:30,301 - __main__ - INFO - Successfully posted to: Facebook feed, Facebook stories, Instagram feed, Instagram stories
+2025-10-05 13:47:30,302 - __main__ - INFO - Successfully posted to all platforms!

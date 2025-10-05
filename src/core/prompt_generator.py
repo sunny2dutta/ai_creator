@@ -2,9 +2,23 @@ import json
 import datetime
 import os
 import openai
-from typing import Dict, Any
+from typing import Dict, Any, List, Optional
 import logging
 from dotenv import load_dotenv
+from langfuse import Langfuse
+from pathlib import Path
+import pickle
+import numpy as np
+
+try:
+    import faiss
+except ImportError:
+    faiss = None
+
+try:
+    from sentence_transformers import SentenceTransformer
+except ImportError:
+    SentenceTransformer = None
 
 load_dotenv()
 logger = logging.getLogger(__name__)
@@ -17,20 +31,56 @@ class PromptGenerator:
             self.seven_day_arc_path = f"/Users/debaryadutta/ai_creator/data/arcs/{profile_name}_7day_arc.json"
         else:
             self.seven_day_arc_path = seven_day_arc_path
-        self.seven_day_data = self._load_seven_day_arc()
+        
         self.openai_api_key = os.getenv('OPENAI_API_KEY')
         if self.openai_api_key:
             openai.api_key = self.openai_api_key
+        
+        # Initialize Langfuse for tracing first
+        self.langfuse_client = None
+        if os.getenv('LANGFUSE_PUBLIC_KEY') and os.getenv('LANGFUSE_SECRET_KEY'):
+            try:
+                self.langfuse_client = Langfuse(
+                    public_key=os.getenv('LANGFUSE_PUBLIC_KEY'),
+                    secret_key=os.getenv('LANGFUSE_SECRET_KEY'),
+                    host=os.getenv('LANGFUSE_HOST', 'https://cloud.langfuse.com')
+                )
+            except Exception as e:
+                logger.warning(f"Could not initialize Langfuse: {e}")
+        
+        # Initialize RAG system
+        self.rag_enabled = faiss is not None and SentenceTransformer is not None
+        self.profile_rags = {}
+        self.embedding_model = None
+
+        if self.rag_enabled:
+            try:
+                self.embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
+                logger.info("RAG system initialized successfully")
+            except Exception as e:
+                logger.warning(f"Failed to initialize RAG: {e}")
+                self.rag_enabled = False
+        
+        # Load the seven day data after Langfuse is initialized
+        self.seven_day_data = self._load_seven_day_arc()
 
     def _load_seven_day_arc(self) -> Dict[str, Any]:
         """Load the 7-day arc JSON file."""
         try:
             with open(self.seven_day_arc_path, 'r', encoding='utf-8') as file:
-                return json.load(file)
+                data = json.load(file)
+            
+            # Log successful load if tracing enabled
+            if hasattr(self, 'langfuse_client') and self.langfuse_client:
+                logger.info(f"Successfully loaded 7-day arc data with {len(data.get('days', {}))} days")
+            
+            return data
         except FileNotFoundError:
-            raise FileNotFoundError(f"7-day arc file not found: {self.seven_day_arc_path}")
+            error_msg = f"7-day arc file not found: {self.seven_day_arc_path}"
+            raise FileNotFoundError(error_msg)
         except json.JSONDecodeError:
-            raise ValueError(f"Invalid JSON in file: {self.seven_day_arc_path}")
+            error_msg = f"Invalid JSON in file: {self.seven_day_arc_path}"
+            raise ValueError(error_msg)
 
     def get_current_day_number(self) -> int:
         """Get current day number based on day of week (1-7, Monday=1)."""
@@ -87,6 +137,11 @@ class PromptGenerator:
 
     def generate_detailed_prompt(self, day_number: int = None) -> Dict[str, Any]:
         """Generate detailed prompt JSON for specific day using LLM enhancement."""
+        # Start Langfuse span for detailed prompt generation
+        trace_id = None
+        if self.langfuse_client:
+            trace_id = self.langfuse_client.create_trace_id()
+        
         day_content = self.get_day_content(day_number)
         current_day = day_number or self.get_current_day_number()
 
@@ -107,8 +162,8 @@ class PromptGenerator:
             "rough_prompt": day_content.get("rough_prompt", "")
         }
 
-        # Get LLM enhanced prompt details
-        enhanced_details = self._enhance_with_llm(enhancement_input)
+        # Get LLM enhanced prompt details with tracing
+        enhanced_details = self._enhance_with_llm(enhancement_input, trace_id)
 
         # Create detailed prompt structure
         detailed_prompt = {
@@ -138,15 +193,190 @@ class PromptGenerator:
             }
         }
 
+        # Log completion for tracing
+        if self.langfuse_client:
+            logger.info(f"Detailed prompt generated for day {current_day} using {detailed_prompt['metadata']['enhancement_method']} method")
+
         return detailed_prompt
 
-    def _enhance_with_llm(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
+    def _get_profile_rag_index(self, profile_name: str) -> Optional[object]:
+        """Get or create FAISS index for profile"""
+        if not self.rag_enabled:
+            return None
+
+        if profile_name not in self.profile_rags:
+            try:
+                index_dir = Path(f"data/rag_indices/{profile_name}")
+                index_path = index_dir / "profile.index"
+                data_path = index_dir / "characteristics.pkl"
+
+                if index_path.exists() and data_path.exists():
+                    index = faiss.read_index(str(index_path))
+                    with open(data_path, 'rb') as f:
+                        characteristics = pickle.load(f)
+                else:
+                    # Create new index if it doesn't exist
+                    index_dir.mkdir(parents=True, exist_ok=True)
+                    index = faiss.IndexFlatIP(384)  # all-MiniLM-L6-v2 embedding dimension
+                    characteristics = []
+
+                self.profile_rags[profile_name] = {
+                    'index': index,
+                    'characteristics': characteristics,
+                    'index_dir': index_dir
+                }
+                
+                logger.info(f"Loaded RAG index for {profile_name} with {len(characteristics)} characteristics")
+            except Exception as e:
+                logger.warning(f"Failed to load RAG index for {profile_name}: {e}")
+                return None
+
+        return self.profile_rags.get(profile_name)
+
+    def _load_profile_characteristics(self, profile_name: str) -> List[str]:
+        """Load profile characteristics from profile data"""
+        try:
+            import sys
+            import os
+            sys.path.append(os.path.join(os.path.dirname(__file__), '../../'))
+            from storage.prompt_storage import JSONPromptStorage
+            storage = JSONPromptStorage()
+            profile_config = storage.get_profile_config(profile_name)
+            
+            characteristics = []
+            
+            # Extract characteristics from profile configuration
+            if 'characteristics' in profile_config:
+                characteristics.extend(profile_config['characteristics'])
+            
+            if 'style_preferences' in profile_config:
+                for pref in profile_config['style_preferences']:
+                    characteristics.append(f"Style preference: {pref}")
+            
+            if 'personality_traits' in profile_config:
+                for trait in profile_config['personality_traits']:
+                    characteristics.append(f"Personality trait: {trait}")
+            
+            if 'interests' in profile_config:
+                for interest in profile_config['interests']:
+                    characteristics.append(f"Interest: {interest}")
+                    
+            return characteristics
+        except Exception as e:
+            logger.warning(f"Failed to load profile characteristics for {profile_name}: {e}")
+            return []
+
+    def _initialize_profile_rag(self, profile_name: str):
+        """Initialize RAG index with profile characteristics"""
+        if not self.rag_enabled:
+            return
+
+        rag_data = self._get_profile_rag_index(profile_name)
+        if not rag_data:
+            return
+
+        # If index is empty, populate it
+        if len(rag_data['characteristics']) == 0:
+            characteristics = self._load_profile_characteristics(profile_name)
+            
+            if characteristics:
+                try:
+                    # Generate embeddings
+                    embeddings = self.embedding_model.encode(characteristics, normalize_embeddings=True)
+                    
+                    # Add to FAISS index
+                    rag_data['index'].add(embeddings)
+                    
+                    # Store characteristics
+                    rag_data['characteristics'].extend(characteristics)
+                    
+                    # Save to disk
+                    self._save_rag_index(profile_name)
+                    logger.info(f"Initialized RAG for {profile_name} with {len(characteristics)} characteristics")
+                    
+                except Exception as e:
+                    logger.error(f"Failed to initialize RAG for {profile_name}: {e}")
+
+    def _save_rag_index(self, profile_name: str):
+        """Save RAG index to disk"""
+        rag_data = self.profile_rags.get(profile_name)
+        if not rag_data:
+            return
+
+        try:
+            index_path = rag_data['index_dir'] / "profile.index"
+            data_path = rag_data['index_dir'] / "characteristics.pkl"
+
+            faiss.write_index(rag_data['index'], str(index_path))
+            with open(data_path, 'wb') as f:
+                pickle.dump(rag_data['characteristics'], f)
+                
+        except Exception as e:
+            logger.error(f"Failed to save RAG index for {profile_name}: {e}")
+
+    def _extract_rag_enhancements(self, profile_name: str, query: str, k: int = 3) -> List[str]:
+        """Extract relevant characteristics from RAG to enhance prompts"""
+        if not self.rag_enabled:
+            return []
+
+        rag_data = self._get_profile_rag_index(profile_name)
+        if not rag_data or rag_data['index'].ntotal == 0:
+            return []
+
+        try:
+            # Generate query embedding
+            query_embedding = self.embedding_model.encode([query], normalize_embeddings=True)
+            
+            # Search for similar characteristics
+            scores, indices = rag_data['index'].search(query_embedding, min(k * 2, rag_data['index'].ntotal))
+            
+            # Extract relevant characteristics with score filtering
+            relevant_characteristics = []
+            for score, idx in zip(scores[0], indices[0]):
+                if idx != -1 and idx < len(rag_data['characteristics']) and score > 0.3:
+                    char = rag_data['characteristics'][idx]
+                    if char not in relevant_characteristics:
+                        relevant_characteristics.append(char)
+                        
+                if len(relevant_characteristics) >= k:
+                    break
+                    
+            return relevant_characteristics
+            
+        except Exception as e:
+            logger.error(f"Failed to extract RAG enhancements: {e}")
+            return []
+
+    def _enhance_with_llm(self, input_data: Dict[str, Any], trace_id=None) -> Dict[str, Any]:
         """Use LLM to enhance the prompt with detailed descriptions."""
 
         if not self.openai_api_key:
             return self._fallback_enhancement(input_data)
+        
+        # Initialize RAG for this profile if enabled
+        character_profile = input_data.get('character', '')
+        if self.rag_enabled and character_profile:
+            self._initialize_profile_rag(character_profile)
+            
+        # Extract RAG enhancements for the story scenario
+        rag_enhancements = []
+        if self.rag_enabled and character_profile:
+            story_context = f"{input_data.get('day_story', '')} {input_data.get('activity', '')} {input_data.get('location', '')}"
+            rag_enhancements = self._extract_rag_enhancements(character_profile, story_context, k=3)
+            if rag_enhancements:
+                logger.info(f"RAG Enhancements for {character_profile}: {rag_enhancements}")
+
+        # Create generation for prompt enhancement
+        generation = None
+        if self.langfuse_client:
+            generation = self.langfuse_client.start_generation(
+                name="prompt_enhancement_llm",
+                model="gpt-4o", 
+                input=input_data
+            )
 
         try:
+            # Build user prompt with RAG enhancements
             user_prompt = f"""
             Enhance this story scenario into detailed image generation prompts:
 
@@ -156,38 +386,71 @@ class PromptGenerator:
             Location: {input_data['location']}
             Activity: {input_data['activity']}
             Character's Mood: {input_data['mood']}
-            Basic Prompt: {input_data['rough_prompt']}
+            Basic Prompt: {input_data['rough_prompt']}"""
+            
+            # Add RAG enhancements if available
+            if rag_enhancements:
+                user_prompt += f"""
+            
+            Character Profile Insights (incorporate these traits naturally):
+            {chr(10).join(f'- {enhancement}' for enhancement in rag_enhancements)}"""
+            
+            user_prompt += """
 
-            Create enhanced prompt details that would generate compelling, authentic images for social media.
+            Create enhanced prompt details that would generate compelling, authentic images for social media, incorporating the character's unique traits and personality.
             """
+
+            messages = [
+                {
+                    "role": "system",
+                    "content": self._get_prompt_enhancement_system_prompt()
+                },
+                {
+                    "role": "user",
+                    "content": user_prompt
+                }
+            ]
 
             response = openai.chat.completions.create(
                 model="gpt-4o",
-                messages=[
-                    {
-                        "role": "system",
-                        "content": self._get_prompt_enhancement_system_prompt()
-                    },
-                    {
-                        "role": "user",
-                        "content": user_prompt
-                    }
-                ],
+                messages=messages,
                 max_tokens=1500,
                 temperature=0.7
             )
 
             # Parse the JSON response
+            ai_response = response.choices[0].message.content.strip()
+            
             try:
-                enhanced_details = json.loads(response.choices[0].message.content.strip())
-                return enhanced_details
+                enhanced_details = json.loads(ai_response)
             except json.JSONDecodeError:
                 # If JSON parsing fails, extract key info manually
-                content = response.choices[0].message.content.strip()
-                return self._parse_llm_response(content, input_data)
+                enhanced_details = self._parse_llm_response(ai_response, input_data)
+            
+            # Update generation with response
+            if generation:
+                generation.update(
+                    output=enhanced_details,
+                    usage_details={
+                        "prompt_tokens": response.usage.prompt_tokens,
+                        "completion_tokens": response.usage.completion_tokens,
+                        "total_tokens": response.usage.total_tokens
+                    }
+                )
+                generation.end()
+            
+            return enhanced_details
 
         except Exception as e:
             logger.error(f"Error enhancing prompt with LLM: {e}")
+            
+            if generation:
+                generation.update(
+                    output={"error": str(e)},
+                    metadata={"enhancement_failed": True, "error": str(e)}
+                )
+                generation.end()
+            
             return self._fallback_enhancement(input_data)
 
     def _parse_llm_response(self, content: str, input_data: Dict[str, Any]) -> Dict[str, Any]:
@@ -259,8 +522,25 @@ class PromptGenerator:
 
     def _fallback_enhancement(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
         """Fallback enhancement when LLM is not available."""
+        
+        # Try to get RAG enhancements for fallback too
+        character_profile = input_data.get('character', '')
+        rag_enhancements = []
+        if self.rag_enabled and character_profile:
+            self._initialize_profile_rag(character_profile)
+            story_context = f"{input_data.get('day_story', '')} {input_data.get('activity', '')} {input_data.get('location', '')}"
+            rag_enhancements = self._extract_rag_enhancements(character_profile, story_context, k=2)
+            if rag_enhancements:
+                logger.info(f"Fallback RAG Enhancements for {character_profile}: {rag_enhancements}")
+        
+        enhanced_scene = f"{input_data['character']} {input_data['activity'].lower()} at {input_data['location']}, appearing {input_data['mood'].lower()}. The scene captures the essence of {input_data['day_story'].lower()}"
+        
+        # Incorporate RAG enhancements into scene description
+        if rag_enhancements:
+            enhanced_scene += f", showcasing their {', '.join(rag_enhancements[:2]).lower()}"
+        
         return {
-            "enhanced_scene": f"{input_data['character']} {input_data['activity'].lower()} at {input_data['location']}, appearing {input_data['mood'].lower()}. The scene captures the essence of {input_data['day_story'].lower()}",
+            "enhanced_scene": enhanced_scene,
             "visual_elements": self._extract_visual_elements_fallback(input_data),
             "mood_descriptors": self._extract_mood_descriptors_fallback(input_data['mood']),
             "lighting": "natural lighting appropriate for the location and time of day",
@@ -332,7 +612,9 @@ class PromptGenerator:
     def save_prompt(self, detailed_prompt: Dict[str, Any], filename: str = None) -> str:
         """Save the generated detailed prompt to a JSON file."""
         if filename is None:
-            filename = "generated_prompt.json"
+            # Use the character profile name to create the output filename
+            character = detailed_prompt.get('metadata', {}).get('character', 'profile')
+            filename = f"{character}_7day_arc.json"
 
         with open(filename, 'w', encoding='utf-8') as file:
             json.dump(detailed_prompt, file, indent=2, ensure_ascii=False)
